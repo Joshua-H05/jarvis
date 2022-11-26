@@ -2,9 +2,9 @@ import jarvis.recognise_speech as jrs
 
 
 def test_recognise_hello():
-    assert isinstance(jrs.recognise("Hello"), Speech)
+    assert isinstance(jrs.recognise(), jrs.Speech)
 
 
 def test_respond_to_hello():
-    speech = Speech("Hello")
-    assert jrs.respond(speech) is None
+    speech = jrs.Speech("Hello")
+    assert jrs.Speech.respond(speech) is None
