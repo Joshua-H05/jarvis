@@ -6,10 +6,9 @@ def recognise():
     r = sr.Recognizer()
     mic = sr.Microphone()
 
-    while True:
-        with mic as source:
-            utterance = r.listen(source)
-            return Speech(utterance)
+    with mic as source:
+        utterance = r.listen(source)
+        return Speech(utterance)
 
 
 class Speech:
@@ -30,9 +29,11 @@ class Speech:
         engine = v2s.init()
         if self.utterance in self.greetings:
             engine.say("Hello, how may I help you?")
-        if self.utterance in self.requests:
+        elif self.utterance in self.requests:
+            # if self.utterance in self.requests:
             pass
-        if self.utterance not in self.greetings and self.utterance not in self.requests:
+        else:
+            # if self.utterance not in self.greetings and self.utterance not in self.requests:
             engine.say("Sorry, I'm not able to do that yet.")
 
 

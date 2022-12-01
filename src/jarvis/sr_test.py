@@ -11,6 +11,7 @@ from ibm_watson import SpeechToTextV1
 from ibm_watson.websocket import RecognizeCallback, AudioSource
 from threading import Thread
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from loguru import logger
 
 try:
     from Queue import Queue, Full
@@ -39,13 +40,15 @@ with open("secret.txt") as f:
 authenticator = IAMAuthenticator(secret)
 speech_to_text = SpeechToTextV1(authenticator=authenticator)
 
+
 # define callback for the speech to text service
 class MyRecognizeCallback(RecognizeCallback):
     def __init__(self):
         RecognizeCallback.__init__(self)
 
     def on_transcription(self, transcript):
-        print(transcript)
+        """print(transcript)"""
+        logger.info(transcript)
 
     def on_connected(self):
         print('Connection was successful')
@@ -67,6 +70,8 @@ class MyRecognizeCallback(RecognizeCallback):
 
     def on_close(self):
         print("Connection closed")
+
+
 # The blue circles: overrides
 
 # this function will initiate the recognize service and pass in the AudioSource
@@ -77,6 +82,7 @@ def recognize_using_weboscket(*args):
                                              recognize_callback=mycallback,
                                              interim_results=True)
 
+
 ###############################################
 #### Prepare the for recording using Pyaudio ##
 ###############################################
@@ -86,13 +92,15 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
 
+
 # define callback for pyaudio to store the recording in queue
 def pyaudio_callback(in_data, frame_count, time_info, status):
     try:
         q.put(in_data)
     except Full:
-        pass # discard
-    return (None, pyaudio.paContinue)
+        pass  # discard
+    return None, pyaudio.paContinue
+
 
 # instantiate pyaudio
 audio = pyaudio.PyAudio()
