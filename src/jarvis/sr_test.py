@@ -11,12 +11,18 @@ from ibm_watson import SpeechToTextV1
 from ibm_watson.websocket import RecognizeCallback, AudioSource
 from threading import Thread
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-from loguru import logger
+from datetime import datetime
 
 try:
     from Queue import Queue, Full
 except ImportError:
     from queue import Queue, Full
+
+
+def generate_file_name():
+    f_name = str(datetime.now())
+    return f_name
+SPEECH_FILE = generate_file_name()
 
 ###############################################
 #### Initalize queue to store the recordings ##
@@ -47,8 +53,10 @@ class MyRecognizeCallback(RecognizeCallback):
         RecognizeCallback.__init__(self)
 
     def on_transcription(self, transcript):
-        """print(transcript)"""
-        logger.info(transcript)
+        print(transcript)
+        with open(SPEECH_FILE, "a") as f:
+            f.write(f"{transcript}\n")
+            f.flush()
 
     def on_connected(self):
         print('Connection was successful')
