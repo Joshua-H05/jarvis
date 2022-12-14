@@ -55,3 +55,4 @@ MANIFEST
 /src/jarvis/secret.txt
 venv*/
 
+/src/jarvis/secret.py

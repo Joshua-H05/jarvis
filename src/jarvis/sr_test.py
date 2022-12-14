@@ -88,7 +88,8 @@ def recognize_using_weboscket(*args):
     speech_to_text.recognize_using_websocket(audio=audio_source,
                                              content_type='audio/l16; rate=44100',
                                              recognize_callback=mycallback,
-                                             interim_results=True)
+                                             interim_results=True,
+                                             inactivity_timeout=1)
 
 
 ###############################################
@@ -127,9 +128,9 @@ stream = audio.open(
 #########################################################################
 #### Start the recording and start service to recognize the stream ######
 #########################################################################
-
 print("Enter CTRL+C to end recording...")
 stream.start_stream()
+
 
 try:
     recognize_thread = Thread(target=recognize_using_weboscket, args=())
@@ -143,3 +144,4 @@ except KeyboardInterrupt:
     stream.close()
     audio.terminate()
     audio_source.completed_recording()
+
