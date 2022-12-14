@@ -5,6 +5,7 @@ import json
 from secret import auth_key
 import pyaudio
 import datetime
+import interact
 
 FRAMES_PER_BUFFER = 3200
 FORMAT = pyaudio.paInt16
@@ -80,7 +81,8 @@ async def send_receive():
                         confidence = result["confidence"]
                         time = result["created"]
                         info = {"text": text, "confidence": confidence, "time registered": time}
-                        print(text, confidence)
+                        print(f" You:{text}")
+                        interact.greeting()
                         with open(SPEECH_FILE, "a") as f:
                             f.write(f"{info}\n")
                             f.flush()
@@ -95,6 +97,9 @@ async def send_receive():
 
         send_result, receive_result = await asyncio.gather(send(), receive())
         print(receive_result)
+
+
+
 
 
 while True:
