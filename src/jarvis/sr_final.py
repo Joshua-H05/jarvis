@@ -3,8 +3,8 @@ import asyncio
 import base64
 import json
 from secret import auth_key
-
 import pyaudio
+import datetime
 
 FRAMES_PER_BUFFER = 3200
 FORMAT = pyaudio.paInt16
@@ -23,6 +23,14 @@ stream = p.open(
 
 # the AssemblyAI endpoint we're going to hit
 URL = "wss://api.assemblyai.com/v2/realtime/ws?sample_rate=16000"
+
+
+def generate_file_name():
+    f_name = str(datetime.datetime.now())
+    return f_name
+
+
+SPEECH_FILE = generate_file_name()
 
 
 async def send_receive():
@@ -66,8 +74,16 @@ async def send_receive():
             while True:
                 try:
                     result_str = await _ws.recv()
-                    utterance = json.loads(result_str)['text']
-                    print(utterance)
+                    result = json.loads(result_str)
+                    if result["message_type"] == "FinalTranscript":
+                        text = result['text']
+                        confidence = result["confidence"]
+                        time = result["created"]
+                        info = {"text": text, "confidence": confidence, "time registered": time}
+                        print(text, confidence)
+                        with open(SPEECH_FILE, "a") as f:
+                            f.write(f"{info}\n")
+                            f.flush()
 
                 except websockets.exceptions.ConnectionClosedError as e:
                     print(e)

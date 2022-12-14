@@ -168,3 +168,6 @@ SpeechRecognition==3.8.1
 urllib3==1.26.13
 websocket-client==0.48.0
 wikipedia==1.4.0
+
+websockets~=10.4
+setuptools~=65.6.0
