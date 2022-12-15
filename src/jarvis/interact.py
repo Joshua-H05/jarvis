@@ -1,8 +1,4 @@
-import pyttsx3
+from gtts import gTTS
+import os
 
-def greeting():
-    engine = pyttsx3.init()
-    engine.say("Hello")
-    engine.runAndWait()
 
-greeting()

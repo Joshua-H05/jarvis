@@ -5,7 +5,10 @@ import json
 from secret import auth_key
 import pyaudio
 import datetime
-import interact
+import streamlit as st
+
+if "run" not in st.session_state:
+    st.session_state["run"] = False
 
 FRAMES_PER_BUFFER = 3200
 FORMAT = pyaudio.paInt16
@@ -24,6 +27,20 @@ stream = p.open(
 
 # the AssemblyAI endpoint we're going to hit
 URL = "wss://api.assemblyai.com/v2/realtime/ws?sample_rate=16000"
+
+
+def start_session():
+    st.session_state["run"] = True
+
+
+def end_session():
+    st.session_state["run"] = False
+
+
+st.title("Your personal AI assistant")
+start, stop = st.columns(2)
+start.button("Start Session", on_click=start_session)
+stop.button("End Session", on_click=end_session)
 
 
 def generate_file_name():
@@ -52,7 +69,7 @@ async def send_receive():
         print("Sending messages ...")
 
         async def send():
-            while True:
+            while st.session_state["run"]:
                 try:
                     data = stream.read(FRAMES_PER_BUFFER, exception_on_overflow=False)
                     data = base64.b64encode(data).decode("utf-8")
@@ -72,17 +89,17 @@ async def send_receive():
             return True
 
         async def receive():
-            while True:
+            while st.session_state["run"]:
                 try:
                     result_str = await _ws.recv()
                     result = json.loads(result_str)
                     if result["message_type"] == "FinalTranscript":
                         text = result['text']
+                        st.markdown(text)
                         confidence = result["confidence"]
                         time = result["created"]
                         info = {"text": text, "confidence": confidence, "time registered": time}
                         print(f" You:{text}")
-                        interact.greeting()
                         with open(SPEECH_FILE, "a") as f:
                             f.write(f"{info}\n")
                             f.flush()
@@ -98,9 +115,4 @@ async def send_receive():
         send_result, receive_result = await asyncio.gather(send(), receive())
         print(receive_result)
 
-
-
-
-
-while True:
-    asyncio.run(send_receive())
+asyncio.run(send_receive())
