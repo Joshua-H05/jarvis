@@ -17,3 +17,9 @@ class Utterance:
 
     def parse_intent(self, reformatted):
         pass
+
+
+mean_command = Utterance(utterance="Could, you please compute the mean of the dataset X?")
+mean_command.reformat()
+reformatted = mean_command.filtered
+print(reformatted)
