@@ -1,13 +1,19 @@
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+
+
 class Utterance:
     def __init__(self, utterance):
         self.utterance = utterance
         self.intents = {}
+        self.stopwords = set(stopwords.words("english"))
+        self.filtered = []
 
     def reformat(self):
-        pass
+        words = word_tokenize(self.utterance)
+        for word in words:
+            if word not in self.stopwords:
+                self.filtered.append(word)
 
-    def remove_stopwords(self):
-        pass
-
-    def parse_intent(self):
+    def parse_intent(self, reformatted):
         pass
