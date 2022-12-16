@@ -100,9 +100,9 @@ async def send_receive():
                         time = result["created"]
                         info = {"text": text, "confidence": confidence, "time registered": time}
                         print(f" You:{text}")
-                        with open(SPEECH_FILE, "a") as f:
+                        """with open(SPEECH_FILE, "a") as f:
                             f.write(f"{info}\n")
-                            f.flush()
+                            f.flush()"""
 
                 except websockets.exceptions.ConnectionClosedError as e:
                     print(e)

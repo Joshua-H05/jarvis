@@ -11,5 +11,3 @@ class Utterance:
 
     def parse_intent(self):
         pass
-
-
