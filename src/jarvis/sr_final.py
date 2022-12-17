@@ -6,6 +6,7 @@ from secret import auth_key
 import pyaudio
 import datetime
 import streamlit as st
+from jarvis import speak
 
 if "run" not in st.session_state:
     st.session_state["run"] = False
@@ -51,6 +52,12 @@ def generate_file_name():
 SPEECH_FILE = generate_file_name()
 
 
+def save_to_file(info):
+    with open(SPEECH_FILE, "a") as f:
+        f.write(f"{info}\n")
+        f.flush()
+
+
 async def send_receive():
     print(f'Connecting websocket to url ${URL}')
 
@@ -63,14 +70,17 @@ async def send_receive():
 
         await asyncio.sleep(0.1)
         print("Receiving SessionBegins ...")
-
         session_begins = await _ws.recv()
         print(session_begins)
         print("Sending messages ...")
 
         async def send():
+            greet = True
             while st.session_state["run"]:
                 try:
+                    if greet:
+                        speak.greet()
+                        greet = False
                     data = stream.read(FRAMES_PER_BUFFER, exception_on_overflow=False)
                     data = base64.b64encode(data).decode("utf-8")
                     json_data = json.dumps({"audio_data": str(data)})
@@ -100,9 +110,7 @@ async def send_receive():
                         time = result["created"]
                         info = {"text": text, "confidence": confidence, "time registered": time}
                         print(f" You:{text}")
-                        with open(SPEECH_FILE, "a") as f:
-                            f.write(f"{info}\n")
-                            f.flush()
+                        save_to_file(info)
 
                 except websockets.exceptions.ConnectionClosedError as e:
                     print(e)
