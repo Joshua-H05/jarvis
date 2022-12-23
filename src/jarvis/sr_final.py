@@ -11,6 +11,11 @@ from jarvis import speak
 if "run" not in st.session_state:
     st.session_state["run"] = False
 
+global greet
+global asked_ques_type
+global asked_func
+global asked_ds
+
 FRAMES_PER_BUFFER = 3200
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -75,12 +80,33 @@ async def send_receive():
         print("Sending messages ...")
 
         async def send():
-            greet = True
+            global greet
+            greet = False
+            global asked_ques_type
+            asked_ques_type = False
+            global asked_func
+            asked_func = False
+            global asked_ds
+            asked_ds = False
+
             while st.session_state["run"]:
                 try:
-                    if greet:
+                    if not greet:
                         speak.greet()
-                        greet = False
+                        greet = True
+
+                    if not asked_ques_type:
+                        speak.ask_func_type()
+                        asked_ques_type = True
+
+                    if not asked_func:
+                        speak.ask_func()
+                        asked_func = True
+
+                    if not asked_ds:
+                        speak.ask_ds()
+                        asked_ds = True
+
                     data = stream.read(FRAMES_PER_BUFFER, exception_on_overflow=False)
                     data = base64.b64encode(data).decode("utf-8")
                     json_data = json.dumps({"audio_data": str(data)})
@@ -110,7 +136,7 @@ async def send_receive():
                         time = result["created"]
                         info = {"text": text, "confidence": confidence, "time registered": time}
                         print(f" You:{text}")
-                        save_to_file(info)
+                        # save_to_file(info)
 
                 except websockets.exceptions.ConnectionClosedError as e:
                     print(e)
