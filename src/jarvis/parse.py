@@ -1,57 +1,40 @@
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 import re
-import nltk
-
-from jarvis import compute as c, speak
-
-
-def record():
-    pass
-
-
-def sr():
-    """ Recognize recording& return string"""
-    pass
-
-
-def recog_recording():
-    return sr(record())
+from jarvis import compute as c, speak, record_and_recognize as rr
+import pysnooper
 
 
 def reformat(utterance):
     filtered = []
-    grammar = "NP: {<DT>?<JJ>*<NN>}"
     utterance = re.sub(r'[^\w\s]', " ", utterance.lower())
     words = word_tokenize(utterance)
     for word in words:
         if word not in stopwords.words():
             filtered.append(word)
-    nltk.download("averaged_perceptron_tagger")
-    filtered_tagged = nltk.pos_tag(filtered)
-    chunk_parser = nltk.RegexpParser(grammar)
-    intent = chunk_parser.parse(filtered_tagged)
-    return intent
+    return filtered
 
 
 # Layer 1
+@pysnooper.snoop()
 def parse_func_type():
     generate_visualization = ["generate", "visualization"]
     predict = ["predict"]
     calc_stat_figs = ["calculate", "statistical", "key", "figures"]
 
     speak.ask_func_type()
-    utterance = recog_recording()
+    utterance = rr.record_and_recognize()[0]
+    print(utterance)
     intent = reformat(utterance)
 
-    dataset = parse_ds()
-    columns, rows = parse_data()
+    """dataset = parse_ds()
+    columns, rows = parse_data()"""
 
-    if generate_visualization in intent:
+    if generate_visualization == intent:
         parse_vis()
-    elif predict in intent:
+    elif predict == intent:
         parse_predict()
-    elif calc_stat_figs in intent:
+    elif calc_stat_figs == intent:
         parse_stat_figs()
     else:
         speak.ask_repeat()
@@ -79,10 +62,10 @@ def parse_vis():
     pie = ["pie", "chart"]
 
     speak.ask_graphs()
-    utterance = recog_recording()
+    utterance = rr.record_and_recognize()[0]
     intent = reformat(utterance)
 
-    if hist in intent:
+    if hist == intent:
         print("hist")
     elif pie in intent:
         print("pie")
@@ -96,14 +79,14 @@ def parse_predict():
     log_reg = ["logistical", "regression"]
 
     speak.ask_pred()
-    utterance = recog_recording()
+    utterance = rr.record_and_recognize()[0]
 
     intent = reformat(utterance)
-    if lin_reg in intent:
+    if lin_reg == intent:
         print("lin_reg")
-    elif k_means in intent:
+    elif k_means == intent:
         print("k_means")
-    elif log_reg in intent:
+    elif log_reg == intent:
         print("log_reg")
     else:
         return False
@@ -115,15 +98,18 @@ def parse_stat_figs():
     median = ["median"]
 
     speak.ask_stat_figs()
-    utterance = recog_recording()
-    intent = reformat(utterance)
+    utterance = rr.record_and_recognize()[0]
 
     intent = reformat(utterance)
-    if mean in intent:
+    if mean == intent:
         print("mean")
-    elif stdev in intent:
+    elif stdev == intent:
         print("stdev")
-    elif median in intent:
+    elif median == intent:
         print("median")
     else:
         return False
+
+
+if __name__ == "__main__":
+    parse_func_type()
