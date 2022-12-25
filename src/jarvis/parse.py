@@ -2,7 +2,6 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 import re
 from jarvis import compute as c, speak, record_and_recognize as rr
-import pysnooper
 
 
 def reformat(utterance):
@@ -16,7 +15,6 @@ def reformat(utterance):
 
 
 # Layer 1
-@pysnooper.snoop()
 def parse_func_type():
     generate_visualization = ["generate", "visualization"]
     predict = ["predict"]
@@ -93,7 +91,7 @@ def parse_predict():
 
 
 def parse_stat_figs():
-    mean = ["mean"]
+    avg = ["average"]
     stdev = ["standard", "deviation"]
     median = ["median"]
 
@@ -101,8 +99,8 @@ def parse_stat_figs():
     utterance = rr.record_and_recognize()[0]
 
     intent = reformat(utterance)
-    if mean == intent:
-        print("mean")
+    if avg == intent:
+        print("avg")
     elif stdev == intent:
         print("stdev")
     elif median == intent:
