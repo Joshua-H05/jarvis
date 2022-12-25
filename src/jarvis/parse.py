@@ -52,9 +52,10 @@ def parse_func_type():
     elif predict in intent:
         parse_predict()
     elif calc_stat_figs in intent:
-        parse_predict()
+        parse_stat_figs()
     else:
-        return False
+        speak.ask_repeat()
+        parse_func_type()
 
 
 # Layer 2
@@ -96,7 +97,6 @@ def parse_predict():
 
     speak.ask_pred()
     utterance = recog_recording()
-    intent = reformat(utterance)
 
     intent = reformat(utterance)
     if lin_reg in intent:
