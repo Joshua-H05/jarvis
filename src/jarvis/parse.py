@@ -68,7 +68,8 @@ def parse_vis():
     elif pie in intent:
         print("pie")
     else:
-        return False
+        speak.ask_repeat()
+        parse_vis()
 
 
 def parse_predict():
@@ -87,7 +88,8 @@ def parse_predict():
     elif log_reg == intent:
         print("log_reg")
     else:
-        return False
+        speak.ask_repeat()
+        parse_predict()
 
 
 def parse_stat_figs():
@@ -106,7 +108,8 @@ def parse_stat_figs():
     elif median == intent:
         print("median")
     else:
-        return False
+        speak.ask_repeat()
+        parse_stat_figs()
 
 
 if __name__ == "__main__":
