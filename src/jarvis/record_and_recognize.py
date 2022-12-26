@@ -3,7 +3,7 @@ import wave
 import datetime
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-from secret import auth_key
+from secret import auth_key, link
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -61,7 +61,8 @@ def read_file(filename, chunk_size=5242880):
 
 def recognize(file):
     api_key = auth_key
-    url = "https://api.us-south.speech-to-text.watson.cloud.ibm.com/instances/979c78ef-2978-4786-ab45-36fc2311f9c2"
+    url = link
+
     authenticator = IAMAuthenticator(api_key)
     stt = SpeechToTextV1(authenticator=authenticator)
     stt.set_service_url(url)
