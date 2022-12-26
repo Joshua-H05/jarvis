@@ -14,6 +14,9 @@ def reformat(utterance):
     return filtered
 
 
+def greet():
+    speak.greet()
+
 # Layer 1
 def parse_func_type():
     generate_visualization = ["generate", "visualization"]
@@ -113,4 +116,5 @@ def parse_stat_figs():
 
 
 if __name__ == "__main__":
+    greet()
     parse_func_type()

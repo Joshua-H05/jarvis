@@ -1,7 +1,8 @@
 import pyaudio
 import wave
 import datetime
-import requests
+from ibm_watson import SpeechToTextV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from secret import auth_key
 
 
@@ -63,26 +64,23 @@ def read_file(filename, chunk_size=5242880):
 
 
 def recognize(file):
-    api_key = auth_key
-    headers = {"authorization": api_key, "content-type": "application/json"}
-    upload_response = requests.post(UPLOAD_ENDPOINT, headers=headers, data=read_file(file))
-    audio_url = upload_response.json()["upload_url"]
-    transcript_request = {'audio_url': audio_url}
-    transcript_response = requests.post(TRANSCRIPTION_ENDPOINT, json=transcript_request, headers=headers)
-    _id = transcript_response.json()["id"]
+    api_key = "VJcNML19XaomGUNasrqQZe34ekhfmN_SxqnsxUrmuH9e"
+    url = "https://api.us-south.speech-to-text.watson.cloud.ibm.com/instances/979c78ef-2978-4786-ab45-36fc2311f9c2"
+    authenticator = IAMAuthenticator(api_key)
+    stt = SpeechToTextV1(authenticator=authenticator)
+    stt.set_service_url(url)
 
-    while True:
-        polling_response = requests.get(TRANSCRIPTION_ENDPOINT + "/" + _id, headers=headers)
-
-        if polling_response.json()['status'] == 'completed':
-            return polling_response.json()['text'], polling_response.json()["confidence"]
-        elif polling_response.json()['status'] == 'error':
-            raise Exception("Transcription failed. Make sure a valid API key has been used.")
+    with open(file, "rb") as f:
+        r = stt.recognize(audio=f, content_type="audio/wav", model="en-US_NarrowbandModel").get_result()
+        text = r["results"][0]["alternatives"][0]["transcript"]
+        confidence = r["results"][0]["alternatives"][0]["confidence"]
+        return text, confidence
 
 
 def record_and_recognize():
     record()
     return recognize(SPEECH_FILE)
 
+
 if __name__ == "__main__":
-    record_and_recognize()
+    print(record_and_recognize())
