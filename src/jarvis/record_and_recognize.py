@@ -5,10 +5,6 @@ from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from secret import auth_key
 
-
-UPLOAD_ENDPOINT = "https://api.assemblyai.com/v2/upload"
-TRANSCRIPTION_ENDPOINT = "https://api.assemblyai.com/v2/transcript"
-
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -64,7 +60,7 @@ def read_file(filename, chunk_size=5242880):
 
 
 def recognize(file):
-    api_key = "VJcNML19XaomGUNasrqQZe34ekhfmN_SxqnsxUrmuH9e"
+    api_key = auth_key
     url = "https://api.us-south.speech-to-text.watson.cloud.ibm.com/instances/979c78ef-2978-4786-ab45-36fc2311f9c2"
     authenticator = IAMAuthenticator(api_key)
     stt = SpeechToTextV1(authenticator=authenticator)

@@ -17,6 +17,7 @@ def reformat(utterance):
 def greet():
     speak.greet()
 
+
 # Layer 1
 def parse_func_type():
     generate_visualization = ["generate", "visualization"]
