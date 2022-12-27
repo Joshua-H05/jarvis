@@ -79,7 +79,7 @@ def parse_vis():
 def parse_predict():
     lin_reg = ["linear", "regression"]
     k_means = ["clustering"]
-    log_reg = ["logistical", "regression"]
+    log_reg = ["logistic", "regression"]
 
     speak.ask_pred()
     utterance = rr.record_and_recognize()[0]

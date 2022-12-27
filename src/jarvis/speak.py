@@ -43,7 +43,7 @@ def generate_files():
 
     # Predict
     ques_pred = \
-        "Which prediction algorithm should I use? Linear regression, logistical regression or k-means clustering?"
+        "Which prediction algorithm should I use? Linear regression, logistic regression or k-means clustering?"
     tts4 = gTTS(ques_pred)
     tts4.save("ques_pred.mp3")
 
@@ -100,8 +100,9 @@ def ask_stat_figs():
 
 if __name__ == "__main__":
     generate_files()
-    ask_rows()
+    ask_pred()
+    """ask_rows()
     ask_columns()
     ask_graphs()
     ask_pred()
-    ask_stat_figs()
+    ask_stat_figs()"""
