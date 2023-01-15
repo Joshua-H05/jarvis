@@ -1,6 +1,8 @@
 import csv
 from pymongo import MongoClient
 from jarvis import secret
+
+
 link = secret.mongo_link
 cluster = MongoClient(link)
 
