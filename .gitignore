@@ -56,3 +56,5 @@ MANIFEST
 venv*/
 
 /src/jarvis/secret.py
+/src/jarvis/customer.csv
+/src/jarvis/suv_data.csv
