@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 from jarvis import mongo_query as mq
 
 
@@ -33,8 +34,9 @@ def standard_deviation(dataframe, column):
     return stddev
 
 
-def plot_histogram():
-    pass
+def plot_histogram(dataframe, column):
+    plt.hist(dataframe[column], bins=10)
+    plt.savefig("output.jpg")
 
 
 def plot_scatter_plot(df, x_var, y_var, binary_class=None):
@@ -62,3 +64,4 @@ if __name__ == "__main__":
     r = compute_range(df, "Age")
     stddev = standard_deviation(df, "Age")
     print(mode)
+    plot_histogram(df, "Age")
