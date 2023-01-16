@@ -3,8 +3,21 @@ import matplotlib.pyplot as plt
 from jarvis import mongo_query as mq
 
 
-FILE_NAME = "customer.csv"
-PATH = "/Users/joshua/ws/jarvis/src/jarvis/"
+def composite_stats(dataframe, column):
+
+    statistics = {
+        "mean": compute_mean,
+        "median": compute_median,
+        "mode": compute_mode,
+        "range": compute_range,
+        "stddev": standard_deviation,
+    }
+
+    stat_results = {}
+    for stat_name, calculation in statistics.items():
+        stat_results[stat_name] = calculation(dataframe, column)
+
+    return stat_results
 
 
 def compute_mean(dataframe, column):
@@ -36,32 +49,20 @@ def standard_deviation(dataframe, column):
 
 def plot_histogram(dataframe, column):
     plt.hist(dataframe[column], bins=10)
-    plt.savefig("output.jpg")
+    print(dataframe[column])
+    plt.savefig("output_hist.jpg")
 
 
-def plot_scatter_plot(df, x_var, y_var, binary_class=None):
+def plot_scatter_plot(dataframe, x_var, y_var, binary_class=None):
     pass
 
 
-def plot_pie_chart():
-    pass
-
-
-def load_data():
-    pd.set_option('display.max_rows', None)
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.width', None)
-    pd.set_option('display.max_colwidth', -1)
-    customers = pd.read_csv(f"{PATH}{FILE_NAME}")
-    print(str(customers))
+def plot_pie_chart(dataframe, column):
+    plt.pie(dataframe[column])
+    plt.savefig("output_pie.jpg")
 
 
 if __name__ == "__main__":
     df = mq.load_and_reformat("suv_sales")
-    avg = compute_mean(df, "Age")
-    med = compute_median(df, "Age")
-    mode = compute_mode(df, "Age")
-    r = compute_range(df, "Age")
-    stddev = standard_deviation(df, "Age")
-    print(mode)
-    plot_histogram(df, "Age")
+    stat_dict = composite_stats(df, "Age")
+    print(stat_dict)
