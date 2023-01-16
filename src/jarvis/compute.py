@@ -1,34 +1,44 @@
 import pandas as pd
+from jarvis import mongo_query as mq
+import pysnooper
+
 
 FILE_NAME = "customer.csv"
 PATH = "/Users/joshua/ws/jarvis/src/jarvis/"
 
 
-def mean():
-    pass
+def compute_mean(dataframe, column):
+    avg = dataframe[column].astype(int).mean()
+    return avg
 
 
-def median():
-    pass
+def compute_median(dataframe, column):
+    med = dataframe[column].astype(int).median()
+    return med
 
 
-def mode():
-    pass
+def compute_mode(dataframe, column):
+    mode = dataframe[column].astype(int).mode(dropna=True)
+    return mode
 
 
-def range():
-    pass
+def compute_range(dataframe, column):
+    greatest = int(dataframe[column].astype(int).nlargest(n=1))
+    smallest = int(dataframe[column].astype(int).nsmallest(n=1))
+    dif = greatest - smallest
+    return dif
 
 
-def standard_deviation():
-    pass
+def standard_deviation(dataframe, column):
+    stddev = dataframe[column].astype(int).std()
+    return stddev
 
 
 def plot_histogram():
     pass
 
 
-def plot_scatter_plot():
+def plot_scatter_plot(df, x_var, y_var, binary_class=None):
     pass
 
 
@@ -46,4 +56,10 @@ def load_data():
 
 
 if __name__ == "__main__":
-    load_data()
+    df = mq.load_and_reformat("suv_sales")
+    avg = compute_mean(df, "Age")
+    med = compute_median(df, "Age")
+    mode = compute_mode(df, "Age")
+    r = compute_range(df, "Age")
+    stddev = standard_deviation(df, "Age")
+    print(mode)
