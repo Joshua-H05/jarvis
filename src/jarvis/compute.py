@@ -18,7 +18,7 @@ def compute_median(dataframe, column):
 
 
 def compute_mode(dataframe, column):
-    mode = dataframe[column].astype(int).mode(dropna=True)
+    mode = dataframe[column].astype(int).mode(dropna=True).tolist()
     return mode
 
 
