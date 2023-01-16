@@ -1,6 +1,5 @@
 import pandas as pd
 from jarvis import mongo_query as mq
-import pysnooper
 
 
 FILE_NAME = "customer.csv"
