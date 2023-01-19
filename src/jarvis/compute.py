@@ -57,14 +57,19 @@ def plot_scatter_plot(dataframe, x_var, y_var, binary_class=None):
 
 
 def plot_pie_chart(dataframe, column):
-    """unique = set(dataframe.sort_values(column)[column].astype("int"))
-    for value in unique:"""
-
-
+    groups = dataframe[column].unique().tolist()
+    groups.sort()
+    values = dataframe[column].tolist()
+    nums = []
+    for group in groups:
+        nums.append(values.count(group))
+    plt.pie(nums, labels=None, autopct='%1.1f%%')
+    plt.legend(labels=groups, loc=1)
+    plt.show()
 
 
 if __name__ == "__main__":
     df = mq.load_and_reformat("suv_sales")
-    stat_dict = composite_stats(df, "Age")
-    print(stat_dict)
-    plot_histogram(df, "Age")
+    """stat_dict = composite_stats(df, "Age")
+    print(stat_dict)"""
+    plot_pie_chart(df, "Gender")
