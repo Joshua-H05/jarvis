@@ -1,4 +1,4 @@
-import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 from jarvis import mongo_query as mq
 
@@ -48,9 +48,8 @@ def standard_deviation(dataframe, column):
 
 
 def plot_histogram(dataframe, column):
-    plt.hist(dataframe[column], bins=10)
-    print(dataframe[column])
-    plt.savefig("output_hist.jpg")
+    sns.displot(dataframe[column].astype("float"))
+    plt.show()
 
 
 def plot_scatter_plot(dataframe, x_var, y_var, binary_class=None):
@@ -58,11 +57,14 @@ def plot_scatter_plot(dataframe, x_var, y_var, binary_class=None):
 
 
 def plot_pie_chart(dataframe, column):
-    plt.pie(dataframe[column])
-    plt.savefig("output_pie.jpg")
+    """unique = set(dataframe.sort_values(column)[column].astype("int"))
+    for value in unique:"""
+
+
 
 
 if __name__ == "__main__":
     df = mq.load_and_reformat("suv_sales")
     stat_dict = composite_stats(df, "Age")
     print(stat_dict)
+    plot_histogram(df, "Age")

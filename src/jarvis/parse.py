@@ -1,7 +1,8 @@
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 import re
-from jarvis import compute as c, speak, record_and_recognize as rr
+from jarvis import speak
+from jarvis import record_and_recognize as rr
 
 
 def reformat(utterance):
