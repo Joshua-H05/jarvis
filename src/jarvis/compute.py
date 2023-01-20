@@ -72,4 +72,5 @@ if __name__ == "__main__":
     df = mq.load_and_reformat("suv_sales")
     """stat_dict = composite_stats(df, "Age")
     print(stat_dict)"""
-    plot_pie_chart(df, "Gender")
+    plot_pie_chart(df, "Purchased")
+    plot_histogram(df, "EstimatedSalary")
