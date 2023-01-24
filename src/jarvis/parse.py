@@ -99,7 +99,7 @@ def parse_predict():
         parse_predict()
 
 
-def parse_stat_figs():
+def parse_stat_figs():  # currently missing df and column
     avg = ["average"]
     stdev = ["standard", "deviation"]
     median = ["median"]
@@ -110,8 +110,6 @@ def parse_stat_figs():
     mode_fig = all_figs["mode"]
     range_fig = all_figs["range"]
     stdev_fig = all_figs["stddev"]
-
-
 
     speak.ask_stat_figs()
     utterance = rr.record_and_recognize()[0]
