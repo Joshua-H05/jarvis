@@ -54,7 +54,7 @@ def generate_files():
 
 
 def greet():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/greeting.mp3")
+    playsound("/jarvis/voices/greeting.mp3")
     return False
 
 
