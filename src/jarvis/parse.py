@@ -1,8 +1,10 @@
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 import re
+
 from jarvis import speak
 from jarvis import record_and_recognize as rr
+from jarvis import compute
 
 
 def reformat(utterance):
@@ -101,17 +103,26 @@ def parse_stat_figs():
     avg = ["average"]
     stdev = ["standard", "deviation"]
     median = ["median"]
+    all_figs = compute.composite_stats()
+
+    mean_fig = all_figs["mean"]
+    median_fig = all_figs["median"]
+    mode_fig = all_figs["mode"]
+    range_fig = all_figs["range"]
+    stdev_fig = all_figs["stddev"]
+
+
 
     speak.ask_stat_figs()
     utterance = rr.record_and_recognize()[0]
 
     intent = reformat(utterance)
     if avg == intent:
-        print("avg")
+        print(mean_fig)
     elif stdev == intent:
-        print("stdev")
+        print(stdev_fig)
     elif median == intent:
-        print("median")
+        print(median_fig)
     else:
         speak.ask_repeat()
         parse_stat_figs()
