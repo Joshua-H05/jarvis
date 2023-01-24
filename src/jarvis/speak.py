@@ -54,48 +54,48 @@ def generate_files():
 
 
 def greet():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/greeting.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/greeting.mp3")
     return False
 
 
 def ask_func_type():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/ques_func_type.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_func_type.mp3")
 
 
 def ask_func():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/ques_func.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_func.mp3")
 
 
 def ask_ds():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/ques_ds.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_ds.mp3")
 
 
 def ask_repeat():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/request_repetition.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/request_repetition.mp3")
 
 
 def understand():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/understand.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/understand.mp3")
 
 
 def ask_rows():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/ques_rows.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_rows.mp3")
 
 
 def ask_columns():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/ques_columns.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_columns.mp3")
 
 
 def ask_graphs():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/ques_graphs.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_graphs.mp3")
 
 
 def ask_pred():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/ques_pred.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_pred.mp3")
 
 
 def ask_stat_figs():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/ques_stat_figs.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_stat_figs.mp3")
 
 
 if __name__ == "__main__":
