@@ -21,36 +21,40 @@ def generate_files():
     tts4.save("/Users/joshua/ws/jarvis/src/jarvis/ques_ds.mp3")
 
     ques_rows = "Which rows should I use?"
-    tts4 = gTTS(ques_rows)
-    tts4.save("ques_rows.mp3")
+    tts5 = gTTS(ques_rows)
+    tts5.save("ques_rows.mp3")
 
     ques_columns = "Which columns should I use?"
-    tts4 = gTTS(ques_columns)
-    tts4.save("ques_columns.mp3")
+    tts6 = gTTS(ques_columns)
+    tts6.save("ques_columns.mp3")
 
     request_repetition = "I'm not sure I understand. Could you repeat please?"
-    tts5 = gTTS(request_repetition)
-    tts5.save("/Users/joshua/ws/jarvis/src/jarvis/request_repetition.mp3")
+    tts7 = gTTS(request_repetition)
+    tts7.save("/Users/joshua/ws/jarvis/src/jarvis/request_repetition.mp3")
 
     understand = "I'm on it!"
-    tts5 = gTTS(understand)
-    tts5.save("understand.mp3")
+    tts8 = gTTS(understand)
+    tts8.save("understand.mp3")
+
+    ques_df = "Which dataframe should I use?"
+    tts9 = gTTS(ques_df)
+    tts9.save("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_df.mp3")
 
     # Graphs
     ques_graphs = "What type of graph would you like me to create? A pie chart, or a histogram?"
-    tts4 = gTTS(ques_graphs)
-    tts4.save("ques_graphs.mp3")
+    tts10 = gTTS(ques_graphs)
+    tts10.save("ques_graphs.mp3")
 
     # Predict
     ques_pred = \
         "Which prediction algorithm should I use? Linear regression, logistic regression or k-means clustering?"
-    tts4 = gTTS(ques_pred)
-    tts4.save("ques_pred.mp3")
+    tts11 = gTTS(ques_pred)
+    tts11.save("ques_pred.mp3")
 
     # Statistical key figures
     ques_stat_figs = "Which statistical figures should I calculate? The mean, the median or the standard deviation?"
-    tts4 = gTTS(ques_stat_figs)
-    tts4.save("ques_stat_figs.mp3")
+    tts12 = gTTS(ques_stat_figs)
+    tts12.save("ques_stat_figs.mp3")
 
 
 def greet():
@@ -86,6 +90,10 @@ def ask_columns():
     playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_columns.mp3")
 
 
+def ask_dataframe():
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_ds.mp3")
+
+
 def ask_graphs():
     playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_graphs.mp3")
 
@@ -99,8 +107,8 @@ def ask_stat_figs():
 
 
 if __name__ == "__main__":
-    generate_files()
-    ask_pred()
+    ask_dataframe()
+    ask_columns()
     """ask_rows()
     ask_columns()
     ask_graphs()

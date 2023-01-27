@@ -69,8 +69,8 @@ def plot_pie_chart(dataframe, column):
 
 
 if __name__ == "__main__":
-    df = mq.load_and_reformat("suv_sales")
-    stat_dict = composite_stats(df, "EstimatedSalary")
+    df = mq.load_and_reformat("cars")
+    stat_dict = composite_stats(df, "age")
     print(stat_dict)
-    plot_pie_chart(df, "Purchased")
-    plot_histogram(df, "EstimatedSalary")
+    plot_pie_chart(df, "purchased")
+    plot_histogram(df, "salary")

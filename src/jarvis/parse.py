@@ -1,10 +1,12 @@
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 import re
+import pysnooper
 
 from jarvis import speak
 from jarvis import record_and_recognize as rr
 from jarvis import compute
+from jarvis import mongo_query as mq
 
 
 def reformat(utterance):
@@ -22,6 +24,7 @@ def greet():
 
 
 # Layer 1
+@pysnooper.snoop(depth=3)
 def parse_func_type():
     generate_visualization = ["generate", "visualization"]
     predict = ["predict"]
@@ -99,11 +102,24 @@ def parse_predict():
         parse_predict()
 
 
+@pysnooper.snoop(depth=2)
 def parse_stat_figs():  # currently missing df and column
     avg = ["average"]
     stdev = ["standard", "deviation"]
     median = ["median"]
-    all_figs = compute.composite_stats()
+
+    speak.ask_dataframe()
+    response_df = reformat(rr.record_and_recognize()[0])[0]
+    df = mq.load_and_reformat(response_df)
+    print(df)
+
+    speak.ask_columns()
+    response_columns = reformat(rr.record_and_recognize()[0])[0]
+
+    speak.ask_stat_figs()
+    response_stat_figs = rr.record_and_recognize()[0]
+
+    all_figs = compute.composite_stats(dataframe=df, column=response_columns)
 
     mean_fig = all_figs["mean"]
     median_fig = all_figs["median"]
@@ -111,16 +127,13 @@ def parse_stat_figs():  # currently missing df and column
     range_fig = all_figs["range"]
     stdev_fig = all_figs["stddev"]
 
-    speak.ask_stat_figs()
-    utterance = rr.record_and_recognize()[0]
-
-    intent = reformat(utterance)
+    intent = reformat(response_stat_figs)
     if avg == intent:
-        print(mean_fig)
+        print(all_figs)
     elif stdev == intent:
-        print(stdev_fig)
+        print(all_figs)
     elif median == intent:
-        print(median_fig)
+        print(all_figs)
     else:
         speak.ask_repeat()
         parse_stat_figs()

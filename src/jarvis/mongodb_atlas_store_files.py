@@ -7,7 +7,7 @@ link = secret.mongo_link
 cluster = MongoClient(link)
 
 db = cluster["jarvis_data"]
-suv_sales_col = db["suv_sales"]
+suv_sales_col = db["cars"]
 
 suv_data = []
 with open("suv_data.csv", newline='') as suv:

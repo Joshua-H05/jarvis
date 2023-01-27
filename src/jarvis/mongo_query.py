@@ -28,5 +28,5 @@ def load_and_reformat(collection_name):
 
 
 if __name__ == "__main__":
-    df = load_and_reformat("suv_sales")
+    df = load_and_reformat("cars")
     print(df)
