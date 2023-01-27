@@ -109,12 +109,12 @@ def parse_stat_figs():  # currently missing df and column
     median = ["median"]
 
     speak.ask_dataframe()
-    response_df = reformat(rr.record_and_recognize()[0])[0]
+    response_df = rr.record_and_recognize()[0].strip()
     df = mq.load_and_reformat(response_df)
     print(df)
 
     speak.ask_columns()
-    response_columns = reformat(rr.record_and_recognize()[0])[0]
+    response_columns = rr.record_and_recognize()[0].strip()
 
     speak.ask_stat_figs()
     response_stat_figs = rr.record_and_recognize()[0]
