@@ -67,16 +67,26 @@ def parse_data():
 # Layer 4
 def parse_vis():
     hist = ["histogram"]
-    pie = ["pie", "chart"]
+    pie = ["chart"]
+
+    speak.ask_dataframe()
+    response_df = rr.record_and_recognize()[0].strip()
+    df = mq.load_and_reformat(response_df)
+    print(df)
+
+    speak.ask_columns()
+    response_columns = rr.record_and_recognize()[0].strip()
+    print(response_columns)
 
     speak.ask_graphs()
-    utterance = rr.record_and_recognize()[0]
-    intent = reformat(utterance)
+    response_graph = rr.record_and_recognize()[0]
+    intent = reformat(response_graph)
+    print(intent)
 
     if hist == intent:
-        print("hist")
-    elif pie in intent:
-        print("pie")
+        compute.plot_histogram(dataframe=df, column=response_columns)
+    elif pie == intent:
+        compute.plot_pie_chart(dataframe=df, column=response_columns)
     else:
         speak.ask_repeat()
         parse_vis()
@@ -140,5 +150,6 @@ def parse_stat_figs():  # currently missing df and column
 
 
 if __name__ == "__main__":
-    greet()
-    parse_func_type()
+    """greet()
+    parse_func_type()"""
+    parse_vis()
