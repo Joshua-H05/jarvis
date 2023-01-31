@@ -24,7 +24,6 @@ def greet():
 
 
 # Layer 1
-@pysnooper.snoop(depth=3)
 def parse_func_type():
     generate_visualization = ["generate", "visualization"]
     predict = ["predict"]
@@ -35,15 +34,12 @@ def parse_func_type():
     print(utterance)
     intent = reformat(utterance)
 
-    """dataset = parse_ds()
-    columns, rows = parse_data()"""
-
     if generate_visualization == intent:
-        parse_vis()
+        return parse_vis
     elif predict == intent:
-        parse_predict()
+        return parse_predict
     elif calc_stat_figs == intent:
-        parse_stat_figs()
+        return parse_stat_figs
     else:
         speak.ask_repeat()
         parse_func_type()
@@ -54,6 +50,11 @@ def parse_ds():
     pass
     # load list of all datasets
     # Return dataset that corresponds to the user's request
+    speak.ask_dataframe()
+    response_df = rr.record_and_recognize()[0].strip()
+    df = mq.load_and_reformat(response_df)
+    print(df)
+    return df
 
 
 # Layer 3
@@ -62,21 +63,16 @@ def parse_data():
     # load list & column names into lists
     # parse info on which columns& rows the user wants to use
     # return the rows& columns to be used
-
-
-# Layer 4
-def parse_vis():
-    hist = ["histogram"]
-    pie = ["chart"]
-
-    speak.ask_dataframe()
-    response_df = rr.record_and_recognize()[0].strip()
-    df = mq.load_and_reformat(response_df)
-    print(df)
-
     speak.ask_columns()
     response_columns = rr.record_and_recognize()[0].strip()
     print(response_columns)
+    return response_columns
+
+
+# Layer 4
+def parse_vis(df, column):
+    hist = ["histogram"]
+    pie = ["chart"]
 
     speak.ask_graphs()
     response_graph = rr.record_and_recognize()[0]
@@ -84,9 +80,9 @@ def parse_vis():
     print(intent)
 
     if hist == intent:
-        compute.plot_histogram(dataframe=df, column=response_columns)
+        compute.plot_histogram(dataframe=df, column=column)
     elif pie == intent:
-        compute.plot_pie_chart(dataframe=df, column=response_columns)
+        return compute.plot_pie_chart(dataframe=df, column=column)
     else:
         speak.ask_repeat()
         parse_vis()
@@ -112,24 +108,15 @@ def parse_predict():
         parse_predict()
 
 
-@pysnooper.snoop(depth=2)
-def parse_stat_figs():  # currently missing df and column
+def parse_stat_figs(df, column):
     avg = ["average"]
     stdev = ["standard", "deviation"]
     median = ["median"]
 
-    speak.ask_dataframe()
-    response_df = rr.record_and_recognize()[0].strip()
-    df = mq.load_and_reformat(response_df)
-    print(df)
-
-    speak.ask_columns()
-    response_columns = rr.record_and_recognize()[0].strip()
-
     speak.ask_stat_figs()
     response_stat_figs = rr.record_and_recognize()[0]
 
-    all_figs = compute.composite_stats(dataframe=df, column=response_columns)
+    all_figs = compute.composite_stats(dataframe=df, column=column)
 
     mean_fig = all_figs["mean"]
     median_fig = all_figs["median"]
@@ -149,7 +136,14 @@ def parse_stat_figs():  # currently missing df and column
         parse_stat_figs()
 
 
+@pysnooper.snoop(depth=3)
+def main():
+    greet()
+    func_type = parse_func_type()
+    df = parse_ds()
+    column = parse_data()
+    func_type(df=df, column=column)
+
+
 if __name__ == "__main__":
-    """greet()
-    parse_func_type()"""
-    parse_vis()
+    main()
