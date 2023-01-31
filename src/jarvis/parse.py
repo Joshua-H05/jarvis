@@ -47,7 +47,6 @@ def parse_func_type():
 
 # Layer 2
 def parse_ds():
-    pass
     # load list of all datasets
     # Return dataset that corresponds to the user's request
     speak.ask_dataframe()
@@ -58,15 +57,16 @@ def parse_ds():
 
 
 # Layer 3
-def parse_data():
-    pass
+def parse_data(df):
     # load list & column names into lists
     # parse info on which columns& rows the user wants to use
     # return the rows& columns to be used
+    all_columns = df.columns()
     speak.ask_columns()
     response_columns = rr.record_and_recognize()[0].strip()
     print(response_columns)
-    return response_columns
+    if response_columns in all_columns:
+        return response_columns
 
 
 # Layer 4
@@ -141,7 +141,7 @@ def main():
     greet()
     func_type = parse_func_type()
     df = parse_ds()
-    column = parse_data()
+    column = parse_data(df)
     func_type(df=df, column=column)
 
 
