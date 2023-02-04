@@ -21,8 +21,8 @@ def reformat(utterance):
 
 
 def greet():
-    speak.greet()
     st.write(speak.greeting)
+    speak.greet()
 
 
 # Layer 1
@@ -31,8 +31,8 @@ def parse_func_type():
     predict = ["predict"]
     calc_stat_figs = ["calculate", "statistical", "key", "figures"]
 
-    speak.ask_func_type()
     st.write(speak.ques_func_type)
+    speak.ask_func_type()
     utterance = rr.record_and_recognize()[0]
     st.write(utterance)
     intent = reformat(utterance)
@@ -53,8 +53,8 @@ def parse_func_type():
 def parse_ds():
     # load list of all datasets
     # Return dataset that corresponds to the user's request
-    speak.ask_ds()
     st.write(speak.ques_ds)
+    speak.ask_ds()
     response_df = rr.record_and_recognize()[0].strip()
     st.write(response_df)
     df = mq.load_and_reformat(response_df)
@@ -67,8 +67,8 @@ def parse_data(df):
     # load list & column names into lists
     # parse info on which columns& rows the user wants to use
     # return the rows& columns to be used
-    speak.ask_columns()
     st.write(speak.ques_columns)
+    speak.ask_columns()
     response_columns = rr.record_and_recognize()[0].strip()
     st.write(response_columns)
     return response_columns
@@ -79,8 +79,8 @@ def parse_vis(df, column):
     hist = ["histogram"]
     pie = ["pie", "chart"]
 
-    speak.ask_graphs()
     st.write(speak.ques_graphs)
+    speak.ask_graphs()
     response_graph = rr.record_and_recognize()[0]
     st.write(response_graph)
     intent = reformat(response_graph)
@@ -99,8 +99,8 @@ def parse_predict():
     k_means = ["clustering"]
     log_reg = ["logistic", "regression"]
 
-    speak.ask_pred()
     st.write(speak.ques_pred)
+    speak.ask_pred()
     utterance = rr.record_and_recognize()[0]
 
     intent = reformat(utterance)
@@ -111,8 +111,8 @@ def parse_predict():
     elif log_reg == intent:
         print("log_reg")
     else:
-        speak.ask_repeat()
         st.write(speak.request_repetition)
+        speak.ask_repeat()
         parse_predict()
 
 
@@ -121,8 +121,8 @@ def parse_stat_figs(df, column):
     stdev = ["standard", "deviation"]
     median = ["median"]
 
-    speak.ask_stat_figs()
     st.write(speak.ask_stat_figs())
+    speak.ask_stat_figs()
     response_stat_figs = rr.record_and_recognize()[0]
     st.write(response_stat_figs)
 
