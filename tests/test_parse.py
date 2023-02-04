@@ -1,4 +1,4 @@
-import jarvis.parse as p
+import jarvis.main as p
 
 
 def test_reformat():
