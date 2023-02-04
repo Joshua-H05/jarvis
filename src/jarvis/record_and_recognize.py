@@ -1,9 +1,9 @@
 import pyaudio
 import wave
 import datetime
-from ibm_watson import SpeechToTextV1
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-from secret import auth_key, link
+from google.oauth2 import service_account
+from google.cloud import speech
+import streamlit as st
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -60,18 +60,29 @@ def read_file(filename, chunk_size=5242880):
 
 
 def recognize(file):
-    api_key = auth_key
-    url = link
+    credentials = service_account.Credentials.from_service_account_info(
+        st.secrets["google_key"])
+    client = speech.SpeechClient(credentials=credentials)
 
-    authenticator = IAMAuthenticator(api_key)
-    stt = SpeechToTextV1(authenticator=authenticator)
-    stt.set_service_url(url)
+    with open(file, "rb") as audio_file:
+        content = audio_file.read()
 
-    with open(file, "rb") as f:
-        r = stt.recognize(audio=f, content_type="audio/wav", model="en-US_NarrowbandModel").get_result()
-        text = r["results"][0]["alternatives"][0]["transcript"]
-        confidence = r["results"][0]["alternatives"][0]["confidence"]
-        return text, confidence
+    audio = speech.RecognitionAudio(content=content)
+
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        language_code="en-US",
+        enable_word_confidence=True,
+    )
+
+    response = client.recognize(config=config, audio=audio)
+
+    for i, result in enumerate(response.results):
+        alternative = result.alternatives[0]
+        return format(alternative.transcript), alternative.words[0].confidence
+
+
+# source https://learndataanalysis.org/source-code-getting-started-with-google-cloud-speech-to-text-api-in-python/
 
 
 def record_and_recognize():

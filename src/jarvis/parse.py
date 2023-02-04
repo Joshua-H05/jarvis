@@ -1,7 +1,8 @@
-from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import re
 import pysnooper
+import streamlit as st
 
 from jarvis import speak
 from jarvis import record_and_recognize as rr
@@ -21,6 +22,7 @@ def reformat(utterance):
 
 def greet():
     speak.greet()
+    st.write(speak.greeting)
 
 
 # Layer 1
@@ -30,8 +32,9 @@ def parse_func_type():
     calc_stat_figs = ["calculate", "statistical", "key", "figures"]
 
     speak.ask_func_type()
+    st.write(speak.ques_func_type)
     utterance = rr.record_and_recognize()[0]
-    print(utterance)
+    st.write(utterance)
     intent = reformat(utterance)
 
     if generate_visualization == intent:
@@ -42,6 +45,7 @@ def parse_func_type():
         return parse_stat_figs
     else:
         speak.ask_repeat()
+        st.write(speak.request_repetition)
         parse_func_type()
 
 
@@ -49,10 +53,12 @@ def parse_func_type():
 def parse_ds():
     # load list of all datasets
     # Return dataset that corresponds to the user's request
-    speak.ask_dataframe()
+    speak.ask_ds()
+    st.write(speak.ques_ds)
     response_df = rr.record_and_recognize()[0].strip()
+    st.write(response_df)
     df = mq.load_and_reformat(response_df)
-    print(df)
+    st.dataframe(df)
     return df
 
 
@@ -61,23 +67,23 @@ def parse_data(df):
     # load list & column names into lists
     # parse info on which columns& rows the user wants to use
     # return the rows& columns to be used
-    all_columns = df.columns()
     speak.ask_columns()
+    st.write(speak.ques_columns)
     response_columns = rr.record_and_recognize()[0].strip()
-    print(response_columns)
-    if response_columns in all_columns:
-        return response_columns
+    st.write(response_columns)
+    return response_columns
 
 
 # Layer 4
 def parse_vis(df, column):
     hist = ["histogram"]
-    pie = ["chart"]
+    pie = ["pie", "chart"]
 
     speak.ask_graphs()
+    st.write(speak.ques_graphs)
     response_graph = rr.record_and_recognize()[0]
+    st.write(response_graph)
     intent = reformat(response_graph)
-    print(intent)
 
     if hist == intent:
         compute.plot_histogram(dataframe=df, column=column)
@@ -94,6 +100,7 @@ def parse_predict():
     log_reg = ["logistic", "regression"]
 
     speak.ask_pred()
+    st.write(speak.ques_pred)
     utterance = rr.record_and_recognize()[0]
 
     intent = reformat(utterance)
@@ -105,6 +112,7 @@ def parse_predict():
         print("log_reg")
     else:
         speak.ask_repeat()
+        st.write(speak.request_repetition)
         parse_predict()
 
 
@@ -114,7 +122,9 @@ def parse_stat_figs(df, column):
     median = ["median"]
 
     speak.ask_stat_figs()
+    st.write(speak.ask_stat_figs())
     response_stat_figs = rr.record_and_recognize()[0]
+    st.write(response_stat_figs)
 
     all_figs = compute.composite_stats(dataframe=df, column=column)
 
@@ -133,7 +143,8 @@ def parse_stat_figs(df, column):
         print(all_figs)
     else:
         speak.ask_repeat()
-        parse_stat_figs()
+        st.write(speak.request_repetition)
+        parse_stat_figs(df, column)
 
 
 @pysnooper.snoop(depth=3)

@@ -1,6 +1,7 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
 from jarvis import mongo_query as mq
+import streamlit as st
 
 
 def composite_stats(dataframe, column):
@@ -49,7 +50,7 @@ def standard_deviation(dataframe, column):
 
 def plot_histogram(dataframe, column):
     sns.displot(dataframe[column].astype("float"))
-    plt.show()
+    st.pyplot()
 
 
 def plot_scatter_plot(dataframe, x_var, y_var, binary_class=None):
@@ -65,12 +66,10 @@ def plot_pie_chart(dataframe, column):
         nums.append(values.count(group))
     plt.pie(nums, labels=None, autopct='%1.1f%%')
     plt.legend(labels=groups, loc=1)
-    plt.show()
+    st.pyplot()
 
 
 if __name__ == "__main__":
     df = mq.load_and_reformat("cars")
-    stat_dict = composite_stats(df, "age")
-    print(stat_dict)
-    plot_pie_chart(df, "purchased")
+    plot_pie_chart(df, "gender")
     plot_histogram(df, "salary")
