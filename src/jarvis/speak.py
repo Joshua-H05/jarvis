@@ -20,6 +20,11 @@ ques_pred = \
 
 ques_stat_figs = "Which statistical figures should I calculate? The mean, the median or the standard deviation?"
 
+error_df_not_found = "Sorry, but I wasn't able to find the dataset you requested"
+
+error_column_not_found = "Sorry, but I wasn't able to find the column you requested"
+
+
 
 def generate_greeting(ques):
     tts = gTTS(ques)
@@ -59,6 +64,16 @@ def generate_predict_ques(ques):
 def generate_stat_ques(ques):
     tts = gTTS(ques)
     tts.save("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_stat_figs.mp3")
+
+
+def generate_error_df_not_found(ques):
+    tts = gTTS(ques)
+    tts.save("/Users/joshua/ws/jarvis/src/jarvis/voices/error_df_not_found.mp3")
+
+
+def generate_error_column_not_found(ques):
+    tts = gTTS(ques)
+    tts.save("/Users/joshua/ws/jarvis/src/jarvis/voices/error_column_not_found.mp3")
 
 
 def generate_all_files():
@@ -104,6 +119,14 @@ def ask_stat_figs():
     playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_stat_figs.mp3")
 
 
+def say_error_df_not_found():
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/error_df_not_found.mp3")
+
+
+def say_error_column_not_found():
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/error_column_not_found.mp3")
+
+
 def ask_all_ques():
     greet()
     ask_func_type()
@@ -116,5 +139,5 @@ def ask_all_ques():
 
 
 if __name__ == "__main__":
-    generate_all_files()
-    ask_all_ques()
+    generate_error_column_not_found(error_column_not_found)
+    say_error_column_not_found()

@@ -27,6 +27,18 @@ def load_and_reformat(collection_name):
     return reformatted
 
 
+def list_all_collections():
+    collections = cluster["jarvis_data"].list_collection_names()
+    return collections
+
+
+def list_all_columns(df):
+    print(f"df: {df}")
+    column_list = list(df)
+    return column_list
+
+
 if __name__ == "__main__":
     df = load_and_reformat("cars")
-    print(df)
+    list_all_collections()
+    print(list_all_columns(df))
