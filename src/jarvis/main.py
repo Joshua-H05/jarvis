@@ -169,6 +169,7 @@ def parse_stat_figs(df, column):
         st.write(speak.request_repetition)
         parse_stat_figs(df, column)
 
+
 @pysnooper.snoop(depth=3)
 def main():
     greet()
