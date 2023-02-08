@@ -1,7 +1,12 @@
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+import gridfs
+from pymongo import MongoClient
+import io
+import pickle
 
 from jarvis import mongo_query as mq
+from jarvis import secret
 
 
 def train_log_reg(df):
@@ -14,8 +19,28 @@ def train_log_reg(df):
     print(log_reg.coef_)
     score = log_reg.score(x_test, y_test)
     print(score)
+    return log_reg, score
+
+
+link = secret.mongo_link
+cluster = MongoClient(link)
+
+
+def store_ml_model(model, model_name):
+    db = cluster["jarvis_models"]
+    col = db[model_name]
+    pickled_model = pickle.dumps(model)
+    info = col.insert_one({model_name: pickled_model, "name": model_name})
+    details = {
+        'inserted_id': info.inserted_id,
+        "model_name": model_name,
+    }
+    return details
+# https://medium.com/up-engineering/saving-ml-and-dl-models-in-mongodb-using-python-f0bbbae256f0
 
 
 if __name__ == "__main__":
     data = mq.load_and_reformat("cars")
-    train_log_reg(data)
+    model, score = train_log_reg(data)
+    if score >= 0.7:
+        store_ml_model(model=model, model_name="cars logistic regression")
