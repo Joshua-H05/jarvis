@@ -16,6 +16,7 @@ def train_log_reg(df):
     print(score)
 
 
+
 if __name__ == "__main__":
     data = mq.load_and_reformat("cars")
     train_log_reg(data)
