@@ -25,7 +25,6 @@ error_df_not_found = "Sorry, but I wasn't able to find the dataset you requested
 error_column_not_found = "Sorry, but I wasn't able to find the column you requested"
 
 
-
 def generate_greeting(ques):
     tts = gTTS(ques)
     tts.save("/Users/joshua/ws/jarvis/src/jarvis/voices/greeting.mp3")

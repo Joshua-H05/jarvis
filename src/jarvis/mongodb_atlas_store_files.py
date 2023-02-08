@@ -6,15 +6,18 @@ from jarvis import secret
 link = secret.mongo_link
 cluster = MongoClient(link)
 
-db = cluster["jarvis_data"]
-suv_sales_col = db["cars"]
 
-suv_data = []
-with open("suv_data.csv", newline='') as suv:
-    suv_dict = csv.DictReader(suv)
-    for row in suv_dict:
-        suv_data.append(row)
+def save_ds(ds_name, filepath):
+    db = cluster["jarvis_data"]
+    col = db[ds_name]
 
-print(suv_data)
+    data = []
+    with open(filepath, newline='') as f:
+        dict_data = csv.DictReader(f)
+        for row in dict_data:
+            data.append(row)
+    col.insert_many(data)
 
-suv_sales_col.insert_many(suv_data)
+
+if __name__ == "__main__":
+    save_ds(ds_name="cars", filepath="cars.csv")

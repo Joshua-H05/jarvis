@@ -60,3 +60,5 @@ venv*/
 /src/jarvis/suv_data.csv
 /src/jarvis/key.json
 /.streamlit/secrets.toml
+/src/jarvis/cars.csv
+/src/jarvis/cars.csv
