@@ -79,7 +79,11 @@ def recognize(file):
 
     for i, result in enumerate(response.results):
         alternative = result.alternatives[0]
-        return format(alternative.transcript), alternative.words[0].confidence
+        results = {
+                "text":format(alternative.transcript),
+                "confidence": alternative.words[0].confidence,
+                }
+        return results
 
 
 # source https://learndataanalysis.org/source-code-getting-started-with-google-cloud-speech-to-text-api-in-python/
