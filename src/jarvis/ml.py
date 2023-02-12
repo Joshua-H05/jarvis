@@ -1,12 +1,9 @@
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-import gridfs
 from pymongo import MongoClient
-import io
 import pickle
 
-from jarvis import mongo_query as mq
-from jarvis import secret
+from jarvis import secret, mongo_query as mq
 
 
 def train_log_reg(df):

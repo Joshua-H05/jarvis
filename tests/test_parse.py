@@ -1,4 +1,4 @@
-import jarvis.verbal_interaction as p
+import jarvis as p
 
 
 def test_reformat():

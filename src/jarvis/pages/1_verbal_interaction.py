@@ -4,10 +4,7 @@ import re
 import pysnooper
 import streamlit as st
 
-from jarvis import speak
-from jarvis import record_and_recognize as rr
-from jarvis import compute
-from jarvis import mongo_query as mq
+from jarvis import speak, mongo_query as mq, record_and_recognize as rr, compute
 
 
 def reformat(utterance):

@@ -95,7 +95,7 @@ def ask_func_type():
 
 
 def ask_ds():
-    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_ds.mp3")
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices//ques_ds.mp3")
 
 
 def ask_columns():
