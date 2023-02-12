@@ -1,7 +1,7 @@
-import seaborn as sns
-import matplotlib.pyplot as plt
+import pandas as pd
 from jarvis import mongo_query as mq
 import streamlit as st
+import plotly.express as px
 
 
 def composite_stats(dataframe, column):
@@ -49,8 +49,8 @@ def standard_deviation(dataframe, column):
 
 
 def plot_histogram(dataframe, column):
-    sns.displot(dataframe[column].astype("float"))
-    st.pyplot()
+    fig = px.histogram(dataframe, x=column)
+    st.plotly_chart(fig)
 
 
 def plot_scatter_plot(dataframe, x_var, y_var, binary_class=None):
@@ -58,18 +58,10 @@ def plot_scatter_plot(dataframe, x_var, y_var, binary_class=None):
 
 
 def plot_pie_chart(dataframe, column):
-    groups = dataframe[column].unique().tolist()
-    groups.sort()
-    values = dataframe[column].tolist()
-    nums = []
-    for group in groups:
-        nums.append(values.count(group))
-    plt.pie(nums, labels=None, autopct='%1.1f%%')
-    plt.legend(labels=groups, loc=1)
-    st.pyplot()
+    fig = px.pie(dataframe, names=column, color_discrete_sequence=px.colors.sequential.RdBu)
+    st.plotly_chart(fig)
 
 
 if __name__ == "__main__":
     df = mq.load_and_reformat("cars")
-    plot_pie_chart(df, "gender")
-    plot_histogram(df, "salary")
+    plot_pie_chart(df, "labels")

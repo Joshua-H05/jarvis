@@ -187,7 +187,7 @@ def parse_stat_figs(df, column):
             st.write(speak.request_repetition)
 
 
-def main():
+def verba_interaction():
     st.header("Jarvis, your data analysis assistant!")
     greet()
     func_type = parse_func_type()
@@ -197,4 +197,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    verba_interaction()
