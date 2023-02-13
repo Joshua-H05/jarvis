@@ -184,14 +184,20 @@ def parse_stat_figs(df, column):
             st.write(speak.request_repetition)
 
 
-def verba_interaction():
+@pysnooper.snoop()
+def verbal_interaction():
     st.header("Jarvis, your data analysis assistant!")
-    greet()
-    func_type = parse_func_type()
-    df = verify_ds()
-    column = parse_data(df)
-    func_type(df=df, column=column)
+    start, stop = st.columns(2)
+    if start.button("Click to start!"):
+        greet()
+        func_type = parse_func_type()
+        df = verify_ds()
+        column = parse_data(df)
+        func_type(df=df, column=column)
+
+    if stop.buttion("Click to stop"):
+        pass
 
 
 if __name__ == "__main__":
-    verba_interaction()
+    verbal_interaction()
