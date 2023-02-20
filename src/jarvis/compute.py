@@ -52,8 +52,9 @@ def plot_histogram(dataframe, column):
     st.plotly_chart(fig)
 
 
-def plot_scatter_plot(dataframe, x_var, y_var, binary_class=None):
-    pass
+def plot_scatter_plot(df, x_var, y_var):
+    fig = px.scatter(df, x_var, y_var)
+    fig.show()
 
 
 def plot_pie_chart(dataframe, column):
@@ -63,4 +64,4 @@ def plot_pie_chart(dataframe, column):
 
 if __name__ == "__main__":
     df = mq.load_and_reformat("cars")
-    plot_pie_chart(df, "labels")
+    plot_scatter_plot(df, "age", "salary")

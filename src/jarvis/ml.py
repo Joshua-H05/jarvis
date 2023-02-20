@@ -1,22 +1,53 @@
 from sklearn.linear_model import LogisticRegression
+from sklearn import svm, metrics
 from sklearn.model_selection import train_test_split
 from pymongo import MongoClient
 import pickle
-
+import pysnooper
 from jarvis import secret, mongo_query as mq
 
 
-def train_log_reg(df):
+def train_log_reg(df, threshold):
+    y = df["labels"]
+    x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
+
+    while True:
+        x_train, x_test, y_train, y_test = train_test_split(x, y)
+
+        log_reg = LogisticRegression()
+        log_reg.fit(x_train, y_train)
+        score = log_reg.score(x_test, y_test)
+        if score > threshold:
+            print(f"Ratio between 0's and 1's: {y_test.tolist().count('0') / y_test.tolist().count('1')}")
+            print(score)
+            print(log_reg.coef_)
+            return log_reg, score
+
+
+def train_log_reg_cv(df):
     y = df["labels"]
     x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
     x_train, x_test, y_train, y_test = train_test_split(x, y)
     log_reg = LogisticRegression()
     log_reg.fit(x_train, y_train)
-    log_reg.fit(x_train, y_train)
-    print(log_reg.coef_)
     score = log_reg.score(x_test, y_test)
     print(score)
-    return log_reg, score
+
+@pysnooper.snoop()
+def train_svm(df):
+    y = df["labels"]
+    x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
+    x_train, x_test, y_train, y_test = train_test_split(x, y)
+    clf = svm.SVC(kernel='linear')
+    clf.fit(x_train, y_train)
+    y_pred = clf.predict(x_test)
+    score = metrics.accuracy_score(y_test, y_pred)
+    print(y_pred)
+    print(score)
+
+
+def train_decision_tree():
+    pass
 
 
 link = secret.mongo_link
@@ -33,11 +64,29 @@ def store_ml_model(model, model_name):
         "model_name": model_name,
     }
     return details
+
+
 # https://medium.com/up-engineering/saving-ml-and-dl-models-in-mongodb-using-python-f0bbbae256f0
+
+def retrieve_model(model_name):
+    db = cluster["jarvis_models"]
+    col = db[model_name]
+    data = col.find({"name": model_name})
+    for i in data:
+        json_data = i
+
+    pickled_model = json_data[model_name]
+    return pickle.loads(pickled_model)
+
+
+def predict(model_name, df):
+    x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
+    model = retrieve_model(model_name)
+    results = model.predict(x)
+    return results
 
 
 if __name__ == "__main__":
-    data = mq.load_and_reformat("cars")
-    model, score = train_log_reg(data)
-    if score >= 0.7:
-        store_ml_model(model=model, model_name="cars logistic regression")
+    df = mq.load_and_reformat("cars")
+    train_svm(df)
+
