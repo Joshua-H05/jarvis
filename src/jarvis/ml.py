@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from pymongo import MongoClient
 import pickle
 import pysnooper
+from sklearn.preprocessing import StandardScaler
 from jarvis import secret, mongo_query as mq
 
 
@@ -28,7 +29,10 @@ def train_log_reg(df, threshold):
 def train_log_reg_cv(df):
     y = df["labels"]
     x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+    x_train, x_test, y_train, y_test = train_test_split(x, y)
+    scaler = StandardScaler()
+    x_train = scaler.fit_transform(x_train)
+    x_test = scaler.fit_transform(x_test)
     log_reg = LogisticRegressionCV(cv=5)
     log_reg.fit(x_train, y_train)
     y_pred = log_reg.predict(x_test)
@@ -37,14 +41,19 @@ def train_log_reg_cv(df):
     print(log_reg.predict(x_test))
 
 
+@pysnooper.snoop()
 def train_svm(df):
     y = df["labels"]
     x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
     x_train, x_test, y_train, y_test = train_test_split(x, y)
+    scaler = StandardScaler()
+    x_train = scaler.fit_transform(x_train)
+    x_test = scaler.fit_transform(x_test)
     clf = svm.SVC(kernel='linear')
     clf.fit(x_train, y_train)
     y_pred = clf.predict(x_test)
     score = metrics.accuracy_score(y_test, y_pred)
+    print(y_pred)
     print(score)
 
 
@@ -91,6 +100,9 @@ def predict(model_name, df):
 if __name__ == "__main__":
     """df = mq.load_and_reformat("cars")"""
     df = pd.read_csv("cars.csv")
+    print("SVM:")
+    train_svm(df)
+    print("Logistic regression:")
     train_log_reg_cv(df)
 
 
