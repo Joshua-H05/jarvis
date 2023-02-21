@@ -41,7 +41,6 @@ def train_log_reg_cv(df):
     print(log_reg.predict(x_test))
 
 
-@pysnooper.snoop()
 def train_svm(df):
     y = df["labels"]
     x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
@@ -100,9 +99,10 @@ def predict(model_name, df):
 if __name__ == "__main__":
     """df = mq.load_and_reformat("cars")"""
     df = pd.read_csv("cars.csv")
-    print("SVM:")
-    train_svm(df)
-    print("Logistic regression:")
-    train_log_reg_cv(df)
+    for i in range(5):
+        print("SVM:")
+        train_svm(df)
+        print("Logistic regression:")
+        train_log_reg_cv(df)
 
 
