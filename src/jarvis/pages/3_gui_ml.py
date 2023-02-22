@@ -29,7 +29,7 @@ def train_model():
     if st.button("Train Model!"):
         if st.session_state.model_type == "Logistic Regression":
             model, score = ml.train_log_reg_cv(df)
-            st.session_state.model_type = model
+            st.session_state["model"] = model
             st.write(f"The test accuracy of the model was: {score}")
 
         elif st.session_state.model_type == "Support Vector Machine":
