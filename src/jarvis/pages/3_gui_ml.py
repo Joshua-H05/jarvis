@@ -47,9 +47,9 @@ def save_model():
 
 if __name__ == "__main__":
     sidebar()
-    with st.container():
-        st.title("Train A Model!")
-        select_train_model()
-        train_model()
-        save_model()
-    st.write("outside container")
+    st.title("Train A Model!")
+    select_train_model()
+    train_model()
+    save_model()
+
+    st.title("Perform A prediction!")
