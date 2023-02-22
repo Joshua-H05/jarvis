@@ -21,7 +21,7 @@ def sidebar():
 
 def select_train_model():
     algos = ["Logistic Regression", "Support Vector Machine"]
-    st.session_state = st.selectbox("Select the algorithm you would like to use!", algos, key="model_type")
+    st.session_state["model_type"] = st.selectbox("Select the algorithm you would like to use!", algos, key="plot_type")
 
 
 def train_model():
@@ -29,29 +29,26 @@ def train_model():
     if st.button("Train Model!"):
         if st.session_state.model_type == "Logistic Regression":
             model, score = ml.train_log_reg_cv(df)
-            st.session_state.trained_model = model
+            st.session_state.model_type = model
             st.write(f"The test accuracy of the model was: {score}")
-            st.session_state["trained"] = True
 
-        if st.session_state.model_type == "Support Vector Machine":
+        elif st.session_state.model_type == "Support Vector Machine":
             model, score = ml.train_svm(df)
-            st.session_state.trained_model = model
+            st.session_state["model"] = model
             st.write(f"The test accuracy of the model was: {score}")
-            st.session_state["trained"] = True
 
 
 def save_model():
     if st.checkbox("Save the model?"):
-        name = st.text_input("What would you like to call this model?")
+        name = st.text_input
         if name and st.session_state.model:
             ml.store_ml_model(model=st.session_state.model, model_name=name)
 
 
-# Prediction section
 def select_model():
     models = ml.list_all_models()
     models.append("Previously trained model")
-    st.session_state = st.selectbox("Select the model you would like to use!", models, key="model")
+    st.session_state["model"] = st.selectbox("Select the model you would like to use!", models, key="model")
 
 
 def predict():
@@ -67,9 +64,13 @@ def predict():
 
 if __name__ == "__main__":
     sidebar()
-    st.title("Train A Model!")
-    select_train_model()
-    train_model()
-    save_model()
+    with st.container():
+        st.title("Train A Model!")
+        select_train_model()
+        train_model()
+        save_model()
 
-    st.title("Perform A prediction!")
+    with st.container():
+        st.title("Perform a prediction")
+        select_model()
+        save_model()
