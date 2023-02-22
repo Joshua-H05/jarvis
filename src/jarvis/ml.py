@@ -39,6 +39,7 @@ def train_log_reg_cv(df):
     score = metrics.accuracy_score(y_test, y_pred)
     print(score)
     print(log_reg.predict(x_test))
+    return log_reg, score
 
 
 def train_svm(df):
@@ -54,6 +55,7 @@ def train_svm(df):
     score = metrics.accuracy_score(y_test, y_pred)
     print(y_pred)
     print(score)
+    return clf, score
 
 
 def train_decision_tree():
@@ -89,20 +91,28 @@ def retrieve_model(model_name):
     return pickle.loads(pickled_model)
 
 
-def predict(model_name, df):
+def predict_stored_model(model_name, df):
     x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
     model = retrieve_model(model_name)
     results = model.predict(x)
-    return results
+    df["results"] = results
+    return df
+
+
+def predict(model, df):
+    x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
+    scaler = StandardScaler()
+    x = scaler.fit_transform(x)
+    results = model.predict(x)
+    df["results"] = results
+    return df
 
 
 if __name__ == "__main__":
+    pd.set_option('display.max_rows', None)
     """df = mq.load_and_reformat("cars")"""
     df = pd.read_csv("cars.csv")
-    for i in range(5):
-        print("SVM:")
-        train_svm(df)
-        print("Logistic regression:")
-        train_log_reg_cv(df)
-
+    model, score = train_log_reg_cv(df)
+    results = predict(model, df)
+    print(results)
 

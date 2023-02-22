@@ -10,15 +10,6 @@ def sidebar_list_ds():
     st.sidebar.radio("Choose a dataset!", datasets, key="selected_file")
 
 
-# sidebar
-
-user_file = st.sidebar.file_uploader("Upload your file here!")
-if user_file:
-    if st.sidebar.button("Save your file in the database?"):
-        ms.store_uploaded_file(file=user_file, ds_name=str(user_file.name))
-sidebar_list_ds()
-
-
 # Main section
 
 def select_plot_type():
@@ -42,6 +33,13 @@ def parse_func():
 
 
 if __name__ == "__main__":
+    # sidebar
+    user_file = st.sidebar.file_uploader("Upload your file here!")
+    if user_file:
+        if st.sidebar.button("Save your file in the database?"):
+            ms.store_uploaded_file(file=user_file, ds_name=str(user_file.name))
+
+    sidebar_list_ds()
     select_plot_type()
     select_plot_var()
     parse_func()
