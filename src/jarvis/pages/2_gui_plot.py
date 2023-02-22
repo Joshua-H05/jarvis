@@ -8,6 +8,7 @@ from jarvis import compute
 def sidebar_list_ds():
     datasets = mq.list_all_collections()
     st.sidebar.radio("Choose a dataset!", datasets, key="selected_file")
+    print(type(st.session_state))
 
 
 # Main section

@@ -37,8 +37,6 @@ def train_log_reg_cv(df):
     log_reg.fit(x_train, y_train)
     y_pred = log_reg.predict(x_test)
     score = metrics.accuracy_score(y_test, y_pred)
-    print(score)
-    print(log_reg.predict(x_test))
     return log_reg, score
 
 
@@ -53,8 +51,6 @@ def train_svm(df):
     clf.fit(x_train, y_train)
     y_pred = clf.predict(x_test)
     score = metrics.accuracy_score(y_test, y_pred)
-    print(y_pred)
-    print(score)
     return clf, score
 
 
@@ -89,6 +85,12 @@ def retrieve_model(model_name):
 
     pickled_model = json_data[model_name]
     return pickle.loads(pickled_model)
+
+
+def list_all_models():
+    db = cluster["jarvis_models"]
+    collections = db.list_collection_names()
+    return collections
 
 
 def predict_stored_model(model_name, df):
