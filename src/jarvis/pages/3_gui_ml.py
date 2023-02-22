@@ -42,7 +42,7 @@ def train_model():
 
 def save_model():
     if st.checkbox("Save the model?"):
-        name = st.text_input
+        name = st.text_input("What would you like to call this model?")
         if name and st.session_state.model:
             ml.store_ml_model(model=st.session_state.model, model_name=name)
 
