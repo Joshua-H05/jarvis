@@ -14,14 +14,25 @@ def sidebar_list_ds():
 # Main section
 
 def select_plot_type():
-    plot_types = ["Pie Chart", "Histogram"]
+    plot_types = ["Pie Chart", "Histogram", "Scatter Plot"]
     st.selectbox("Select the type of graph you would like to create!", plot_types, key="plot_type")
+    if st.session_state.plot_type == "Scatter Plot":
+        double_plot_var()
+    else:
+        single_plot_var()
 
 
-def select_plot_var():
+def single_plot_var():
     df = mq.load_and_reformat(st.session_state.selected_file)
     columns = mq.list_all_columns(df)
     st.selectbox(label="Choose the value you would like to plot", options=columns, key="col")
+
+
+def double_plot_var():
+    df = mq.load_and_reformat(st.session_state.selected_file)
+    columns = mq.list_all_columns(df)
+    st.selectbox(label="Choose the X axis for the plot", options=columns, key="x_axis")
+    st.selectbox(label="Choose the Y axis for the plot", options=columns, key="y_axis")
 
 
 def parse_func():
@@ -31,6 +42,11 @@ def parse_func():
 
     if st.session_state.plot_type == "Pie Chart" and st.session_state.col:
         compute.plot_pie_chart(df, st.session_state.col)
+
+    if st.session_state.plot_type == "Scatter Plot" and st.session_state.x_axis and st.session_state.y_axis:
+        x = st.session_state.x_axis
+        y = st.session_state.y_axis
+        compute.plot_scatter_plot(df, x_var=x, y_var=y)
 
 
 if __name__ == "__main__":
@@ -42,5 +58,4 @@ if __name__ == "__main__":
 
     sidebar_list_ds()
     select_plot_type()
-    select_plot_var()
     parse_func()

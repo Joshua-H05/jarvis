@@ -54,7 +54,7 @@ def plot_histogram(dataframe, column):
 
 def plot_scatter_plot(df, x_var, y_var):
     fig = px.scatter(df, x_var, y_var)
-    fig.show()
+    st.plotly_chart(fig)
 
 
 def plot_pie_chart(dataframe, column):
