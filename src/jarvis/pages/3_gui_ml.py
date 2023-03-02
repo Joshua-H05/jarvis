@@ -39,12 +39,13 @@ def train_model():
             st.write(f"The test accuracy of the model was: {score}")
 
 
-@pysnooper.snoop(depth=2)
+@pysnooper.snoop()
 def save_model():
-    if st.button("Save the model?", key="save_model"):
+    if st.button("Save the model?"):
         name = st.text_input(" What would you like to call this model?")
         if name and st.session_state.model:
-            ml.store_ml_model(model=st.session_state.model, model_name=name)
+            details = ml.store_ml_model(model=st.session_state.model, model_name=st.session_state["model_name"])
+            print(details)
 
 
 def select_model():
@@ -74,5 +75,5 @@ if __name__ == "__main__":
 
     with st.container():
         st.title("Perform a prediction")
-        select_model()
-        predict()
+        """select_model()
+        predict()"""

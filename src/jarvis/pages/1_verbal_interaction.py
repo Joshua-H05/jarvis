@@ -4,7 +4,7 @@ import re
 import pysnooper
 import streamlit as st
 
-from jarvis import speak, mongo_query as mq, record_and_recognize as rr, compute
+from jarvis import speak, mongo_query as mq, record_and_recognize as rr, compute, ml
 
 
 def reformat(utterance):
@@ -127,8 +127,8 @@ def parse_vis(df, column):
 
 def ask_predict():
     if st.session_state["run"]:
-        st.write(speak.ques_pred)
-        speak.ask_pred()
+        st.write(speak.ques_algo)
+        speak.ask_algo()
         utterance = rr.record_and_recognize()["text"]
         st.write(utterance)
         return utterance
@@ -136,7 +136,6 @@ def ask_predict():
 
 def parse_predict():
     lin_reg = ["linear", "regression"]
-    k_means = ["clustering"]
     log_reg = ["logistic", "regression"]
 
     if st.session_state["run"]:
@@ -145,8 +144,6 @@ def parse_predict():
             intent = reformat(utterance)
             if lin_reg == intent:
                 print("lin_reg")
-            elif k_means == intent:
-                print("k_means")
             elif log_reg == intent:
                 print("log_reg")
             else:

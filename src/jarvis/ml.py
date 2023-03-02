@@ -61,7 +61,7 @@ def train_decision_tree():
 link = secret.mongo_link
 cluster = MongoClient(link)
 
-
+@pysnooper.snoop()
 def store_ml_model(model, model_name):
     db = cluster["jarvis_models"]
     col = db[model_name]

@@ -24,6 +24,10 @@ error_df_not_found = "Sorry, but I wasn't able to find the dataset you requested
 
 error_column_not_found = "Sorry, but I wasn't able to find the column you requested"
 
+ques_algo = "What is the name of the model you would like to use?"
+
+ques_mlds = "Which dataset would you like to perform the prediction on?"
+
 
 def generate_greeting(ques):
     tts = gTTS(ques)
@@ -73,6 +77,11 @@ def generate_error_df_not_found(ques):
 def generate_error_column_not_found(ques):
     tts = gTTS(ques)
     tts.save("/Users/joshua/ws/jarvis/src/jarvis/voices/error_column_not_found.mp3")
+
+
+def generate_ques_algo(ques):
+    tts = gTTS(ques)
+    tts.save("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_algo.mp3")
 
 
 def generate_all_files():
@@ -126,6 +135,10 @@ def say_error_column_not_found():
     playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/error_column_not_found.mp3")
 
 
+def ask_algo():
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_algo.mp3")
+
+
 def ask_all_ques():
     greet()
     ask_func_type()
@@ -138,5 +151,5 @@ def ask_all_ques():
 
 
 if __name__ == "__main__":
-    generate_error_column_not_found(error_column_not_found)
-    say_error_column_not_found()
+    generate_ques_algo(ques_algo)
+    ask_algo()
