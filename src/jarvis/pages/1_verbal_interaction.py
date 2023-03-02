@@ -64,7 +64,7 @@ def ask_ds():
 
 def ask_mlds():
     if st.session_state["run"]:
-        st.write(speak.ques_ds)
+        st.write(speak.ques_mlds)
         speak.ask_pred_data()
         data = rr.record_and_recognize()["text"]
         st.write(data)
@@ -92,7 +92,6 @@ def verify_mlds():
             else:
                 st.write(speak.error_df_not_found)
                 speak.say_error_df_not_found()
-
 
 
 def verify_ds():
