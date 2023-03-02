@@ -42,11 +42,11 @@ def parse_func_type():
         while True:
             intent = ask_func_type()
             if generate_visualization == intent:
-                return parse_vis
+                return "vis"
             elif predict == intent:
-                return parse_predict
+                return "pred"
             elif calc_stat_figs == intent:
-                return parse_stat_figs
+                return "figs"
             else:
                 speak.ask_repeat()
                 st.write(speak.request_repetition)
@@ -60,6 +60,39 @@ def ask_ds():
         response_df = rr.record_and_recognize()["text"]
         st.write(response_df)
         return response_df
+
+
+def ask_mlds():
+    if st.session_state["run"]:
+        st.write(speak.ques_ds)
+        speak.ask_pred_data()
+        data = rr.record_and_recognize()["text"]
+        st.write(data)
+        return data
+
+
+def ask_model():
+    if st.session_state["run"]:
+        st.write(speak.ques_algo)
+        speak.ask_algo()
+        response_df = rr.record_and_recognize()["text"]
+        st.write(response_df)
+        return response_df
+
+
+def verify_mlds():
+    collections = mq.list_all_collections()
+    if st.session_state["run"]:
+        while True:
+            response_df = ask_mlds()
+            if response_df in collections:
+                df = mq.load_and_reformat(response_df)
+                st.dataframe(df)
+                return df
+            else:
+                st.write(speak.error_df_not_found)
+                speak.say_error_df_not_found()
+
 
 
 def verify_ds():
@@ -192,6 +225,24 @@ def parse_stat_figs(df, column):
                 st.write(speak.request_repetition)
 
 
+def info():
+    df = verify_ds()
+    column = parse_data(df)
+    return df, column
+
+
+def parse_model():
+    collections = ml.list_all_models()
+    if st.session_state["run"]:
+        while True:
+            response = ask_model()
+            if response in collections:
+                return response
+            else:
+                st.write(speak.error_df_not_found)
+                speak.say_error_df_not_found()
+
+
 @pysnooper.snoop()
 def verbal_interaction():
     st.session_state["run"] = False
@@ -210,10 +261,20 @@ def verbal_interaction():
     while st.session_state["run"]:
         greet()
         func_type = parse_func_type()
-        df = verify_ds()
-        column = parse_data(df)
-        func_type(df=df, column=column)
-        st.session_state["run"] = False
+        if func_type == "pred":
+            model = parse_model()
+            ds = verify_mlds()
+            results = ml.predict_stored_model(model_name=model, df=ds)
+            st.dataframe(results)
+
+        if func_type == "vis":
+            df, column = info()
+            parse_vis(df, column)
+
+        elif func_type == "figs":
+            df, column = info()
+            parse_stat_figs(df,column)
+
 
 
 if __name__ == "__main__":

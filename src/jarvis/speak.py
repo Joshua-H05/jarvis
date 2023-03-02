@@ -84,6 +84,11 @@ def generate_ques_algo(ques):
     tts.save("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_algo.mp3")
 
 
+def generate_ques_pred_data(ques):
+    tts = gTTS(ques)
+    tts.save("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_pred_data.mp3")
+
+
 def generate_all_files():
     generate_greeting(greeting)
     generate_ques_func_type(ques_func_type)
@@ -139,6 +144,10 @@ def ask_algo():
     playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_algo.mp3")
 
 
+def ask_pred_data():
+    playsound("/Users/joshua/ws/jarvis/src/jarvis/voices/ques_pred_data.mp3")
+
+
 def ask_all_ques():
     greet()
     ask_func_type()
@@ -152,4 +161,6 @@ def ask_all_ques():
 
 if __name__ == "__main__":
     generate_ques_algo(ques_algo)
+    generate_ques_pred_data(ques_mlds)
     ask_algo()
+    ask_pred_data()

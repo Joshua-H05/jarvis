@@ -114,7 +114,10 @@ if __name__ == "__main__":
     pd.set_option('display.max_rows', None)
     """df = mq.load_and_reformat("cars")"""
     df = pd.read_csv("cars.csv")
-    model, score = train_log_reg_cv(df)
-    results = predict(model, df)
-    print(results)
+    score = 0
+    while score < 0.85:
+        model, score = train_log_reg_cv(df)
+        print(score)
+        if score >= 0.85:
+            store_ml_model(model, "cars logistic regression")
 

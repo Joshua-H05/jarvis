@@ -59,7 +59,7 @@ venv*/
 /src/jarvis/customer.csv
 /src/jarvis/suv_data.csv
 /src/jarvis/key.json
-/.streamlit/secrets.toml
+/src/jarvis/.streamlit/secrets.toml
 /src/jarvis/cars.csv
 /src/jarvis/cars.csv
 /src/jarvis/breast_cancer.csv
