@@ -94,14 +94,12 @@ def list_all_models():
 
 
 def predict_stored_model(model_name, df):
-    x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
     model = retrieve_model(model_name)
-    results = model.predict(x)
-    df["results"] = results
-    return df
+    results = pred(model, df)
+    return results
 
 
-def predict(model, df):
+def pred(model, df):
     x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]
     scaler = StandardScaler()
     x = scaler.fit_transform(x)
@@ -114,10 +112,11 @@ if __name__ == "__main__":
     pd.set_option('display.max_rows', None)
     """df = mq.load_and_reformat("cars")"""
     df = pd.read_csv("cars.csv")
-    score = 0
-    while score < 0.85:
+    while True:
         model, score = train_log_reg_cv(df)
         print(score)
-        if score >= 0.85:
+        if score >= 0.9:
+            print(f"success: {score}")
             store_ml_model(model, "cars logistic regression")
+            break
 

@@ -3,6 +3,7 @@ from nltk.corpus import stopwords
 import re
 import pysnooper
 import streamlit as st
+from streamlit_chat import message
 
 from jarvis import speak, mongo_query as mq, record_and_recognize as rr, compute, ml
 
@@ -18,17 +19,17 @@ def reformat(utterance):
 
 
 def greet():
-    st.write(speak.greeting)
+    message(speak.greeting)
     speak.greet()
 
 
 # Layer 1
 def ask_func_type():
     if st.session_state["run"]:
-        st.write(speak.ques_func_type)
+        message(speak.ques_func_type)
         speak.ask_func_type()
         utterance = rr.record_and_recognize()["text"]
-        st.write(utterance)
+        message(utterance, is_user=True)
         intent = reformat(utterance)
         return intent
 
@@ -49,34 +50,34 @@ def parse_func_type():
                 return "figs"
             else:
                 speak.ask_repeat()
-                st.write(speak.request_repetition)
+                message(speak.request_repetition)
 
 
 # Layer 2
 def ask_ds():
     if st.session_state["run"]:
-        st.write(speak.ques_ds)
+        message(speak.ques_ds)
         speak.ask_ds()
         response_df = rr.record_and_recognize()["text"]
-        st.write(response_df)
+        message(response_df, is_user=True)
         return response_df
 
 
 def ask_mlds():
     if st.session_state["run"]:
-        st.write(speak.ques_mlds)
+        message(speak.ques_mlds)
         speak.ask_pred_data()
         data = rr.record_and_recognize()["text"]
-        st.write(data)
+        message(data, is_user=True)
         return data
 
 
 def ask_model():
     if st.session_state["run"]:
-        st.write(speak.ques_algo)
+        message(speak.ques_algo)
         speak.ask_algo()
         response_df = rr.record_and_recognize()["text"]
-        st.write(response_df)
+        message(response_df, is_user=True)
         return response_df
 
 
@@ -87,10 +88,9 @@ def verify_mlds():
             response_df = ask_mlds()
             if response_df in collections:
                 df = mq.load_and_reformat(response_df)
-                st.dataframe(df)
                 return df
             else:
-                st.write(speak.error_df_not_found)
+                message(speak.error_df_not_found)
                 speak.say_error_df_not_found()
 
 
@@ -107,17 +107,17 @@ def verify_ds():
                 st.dataframe(df)
                 return df
             else:
-                st.write(speak.error_df_not_found)
+                message(speak.error_df_not_found)
                 speak.say_error_df_not_found()
 
 
 # Layer 3
 def ask_data():
     if st.session_state["run"]:
-        st.write(speak.ques_columns)
+        message(speak.ques_columns)
         speak.ask_columns()
         response_columns = rr.record_and_recognize()["text"].strip()
-        st.write(response_columns)
+        message(response_columns, is_user=True)
         return response_columns
 
 
@@ -132,7 +132,7 @@ def parse_data(df):
             if response_columns in columns:
                 return response_columns
             else:
-                st.write(speak.error_column_not_found)
+                message(speak.error_column_not_found)
                 speak.say_error_column_not_found()
 
 
@@ -142,10 +142,10 @@ def parse_vis(df, column):
     pie = ["pie", "chart"]
 
     if st.session_state["run"]:
-        st.write(speak.ques_graphs)
+        message(speak.ques_graphs)
         speak.ask_graphs()
         response_graph = rr.record_and_recognize()["text"]
-        st.write(response_graph)
+        message(response_graph, is_user=True)
         intent = reformat(response_graph)
 
         if hist == intent:
@@ -159,10 +159,10 @@ def parse_vis(df, column):
 
 def ask_predict():
     if st.session_state["run"]:
-        st.write(speak.ques_algo)
+        message(speak.ques_algo)
         speak.ask_algo()
         utterance = rr.record_and_recognize()["text"]
-        st.write(utterance)
+        message(utterance, is_user=True)
         return utterance
 
 
@@ -179,16 +179,16 @@ def parse_predict():
             elif log_reg == intent:
                 print("log_reg")
             else:
-                st.write(speak.request_repetition)
+                message(speak.request_repetition)
                 speak.ask_repeat()
 
 
 def ask_stat_figs():
     if st.session_state["run"]:
-        st.write(speak.ques_stat_figs)
+        message(speak.ques_stat_figs)
         speak.ask_stat_figs()
         response_stat_figs = rr.record_and_recognize()["text"]
-        st.write(response_stat_figs)
+        message(response_stat_figs, is_user=True)
         intent = reformat(response_stat_figs)
         return intent
 
@@ -225,9 +225,10 @@ def parse_stat_figs(df, column):
 
 
 def info():
-    df = verify_ds()
-    column = parse_data(df)
-    return df, column
+    if st.session_state["run"]:
+        df = verify_ds()
+        column = parse_data(df)
+        return df, column
 
 
 def parse_model():
@@ -238,19 +239,24 @@ def parse_model():
             if response in collections:
                 return response
             else:
-                st.write(speak.error_df_not_found)
+                message(speak.error_df_not_found)
                 speak.say_error_df_not_found()
 
 
-@pysnooper.snoop()
 def verbal_interaction():
     st.session_state["run"] = False
 
     st.sidebar.write("# Here are the available datasets:")
     for item in mq.list_all_collections():
         st.sidebar.write("- " + item)
+
+    st.sidebar.write("# Here are the available models:")
+    for item in ml.list_all_models():
+        st.sidebar.write("- " + item)
+
     st.header("Jarvis, your data analysis assistant!")
     start, stop = st.columns(2)
+
     if start.button("Click to start!"):
         st.session_state["run"] = True
 
@@ -272,8 +278,9 @@ def verbal_interaction():
 
         elif func_type == "figs":
             df, column = info()
-            parse_stat_figs(df,column)
+            parse_stat_figs(df, column)
 
+        st.session_state["run"] = False
 
 
 if __name__ == "__main__":
