@@ -25,8 +25,12 @@ def select_train_model():
     st.session_state["model_type"] = st.selectbox("Select the algorithm you would like to use!", algos, key="plot_type")
 
 
+
+@pysnooper.snoop()
 def train_model():
     df = mq.load_and_reformat(st.session_state.selected_file)
+    select_train_model()
+    name = st.text_input(" What would you like to call this model?")
     if st.button("Train Model!"):
         if st.session_state.model_type == "Logistic Regression":
             model, score = ml.train_log_reg_cv(df)
@@ -39,7 +43,15 @@ def train_model():
             st.write(f"The test accuracy of the model was: {score}")
 
 
-@pysnooper.snoop()
+    if st.button("Save the model?"):
+        details = ml.store_ml_model(model=st.session_state.model, model_name=name)
+        st.write("model saved")
+        print(details)
+
+    else:
+        print("Button not pressed")
+
+
 def save_model():
     if st.button("Save the model?"):
         name = st.text_input(" What would you like to call this model?")
@@ -69,11 +81,9 @@ if __name__ == "__main__":
     sidebar()
     with st.container():
         st.title("Train A Model!")
-        select_train_model()
         train_model()
-        save_model()
 
     with st.container():
         st.title("Perform a prediction")
-        """select_model()
-        predict()"""
+        select_model()
+        predict()
