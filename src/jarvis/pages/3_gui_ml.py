@@ -62,19 +62,17 @@ def save_model():
 
 def select_model():
     models = ml.list_all_models()
-    models.append("Previously trained model")
     st.selectbox("Select the model you would like to use!", models, key="model")
 
 
+@pysnooper.snoop()
 def predict():
-    if st.session_state.model and st.session_state.selected_file:
+    if st.session_state.selected_file:
+        df = mq.load_and_reformat(st.session_state.selected_file)
         if st.session_state.model:
             model = st.session_state.model
-        else:
-            model = ml.retrieve_model(st.session_state.model)
-        df = mq.load_and_reformat(st.session_state.selected_file)
-        results = ml.pred(model, df)
-        st.dataframe(results)
+            result = ml.predict_stored_model(model, df)
+            st.dataframe(result)
 
 
 if __name__ == "__main__":
