@@ -73,7 +73,7 @@ def predict():
         else:
             model = ml.retrieve_model(st.session_state.model)
         df = mq.load_and_reformat(st.session_state.selected_file)
-        results = ml.predict(model, df)
+        results = ml.pred(model, df)
         st.dataframe(results)
 
 
