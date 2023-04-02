@@ -42,7 +42,6 @@ def train_model():
             st.session_state["model"] = model
             st.write(f"The test accuracy of the model was: {score}")
 
-
     if st.button("Save the model?"):
         details = ml.store_ml_model(model=st.session_state.model, model_name=name)
         st.write("model saved")
