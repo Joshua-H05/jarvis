@@ -33,8 +33,7 @@ def list_all_collections():
 
 
 def list_all_columns(df):
-    print(f"df: {df}")
-    column_list = list(df)
+    column_list = list(df.columns.values.tolist())
     return column_list
 
 

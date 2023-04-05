@@ -17,6 +17,31 @@ def sidebar():
     sidebar_list_ds()
 
 
-sidebar()
-df = mq.load_and_reformat(st.session_state.selected_file)
-st.dataframe(df)
+def show_df(df):
+    st.dataframe(df, height=60)
+
+
+def ohe():
+    name = st.session_state.selected_file # these lines are repetitive, need to clean up
+    df = mq.load_and_reformat(name)
+    st.title("One Hot Encoding")
+    cols = mq.list_all_columns(df)
+    selected = st.multiselect("Select The Columns You Would Like To Encode!", cols)
+
+    for col in selected:
+        df = p.one_hot(df, col)
+        print(df)
+    show_df(df)
+
+def rm():
+    pass
+
+
+
+
+
+if __name__ == "__main__":
+    sidebar()
+    df = mq.load_and_reformat(st.session_state.selected_file)
+    show_df(df)
+    ohe()
