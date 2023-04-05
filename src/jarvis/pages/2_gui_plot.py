@@ -38,15 +38,24 @@ def double_plot_var():
 def parse_func():
     df = mq.load_and_reformat(st.session_state.selected_file)
     if st.session_state.plot_type == "Histogram" and st.session_state.col:
-        compute.plot_histogram(df, st.session_state.col)
+        try:
+            compute.plot_histogram(df, st.session_state.col)
+        except TypeError:
+            st.warning("Sorry, but we could not plot the data you have selected. Please try something else.")
 
     if st.session_state.plot_type == "Pie Chart" and st.session_state.col:
-        compute.plot_pie_chart(df, st.session_state.col)
+        try:
+            compute.plot_pie_chart(df, st.session_state.col)
+        except TypeError:
+            st.warning("Sorry, but we could not plot the data you have selected. Please try something else.")
 
     if st.session_state.plot_type == "Scatter Plot" and st.session_state.x_axis and st.session_state.y_axis:
-        x = st.session_state.x_axis
-        y = st.session_state.y_axis
-        compute.plot_scatter_plot(df, x_var=x, y_var=y)
+        try:
+            x = st.session_state.x_axis
+            y = st.session_state.y_axis
+            compute.plot_scatter_plot(df, x_var=x, y_var=y)
+        except TypeError:
+            st.warning("Sorry, but we could not plot the data you have selected. Please try something else.")
 
 
 if __name__ == "__main__":

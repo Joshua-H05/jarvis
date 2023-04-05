@@ -19,13 +19,12 @@ def sidebar():
 
 
 def show_df(df):
-    st.dataframe(df, height=80)
+    with st.container():
+        st.dataframe(df, height=80)
 
 
-def ohe():
-    name = st.session_state.selected_file  # these lines are repetitive, need to clean up
-    df = mq.load_and_reformat(name)
-    st.title("One Hot Encoding")
+def ohe(df):
+    st.subheader("One Hot Encoding")
     cols = mq.list_all_columns(df)
     selected = st.multiselect("Select The Columns You Would Like To Encode!", cols)
 
@@ -35,10 +34,8 @@ def ohe():
     show_df(df)
 
 
-def rm_col():
-    name = st.session_state.selected_file  # these lines are repetitive, need to clean up
-    df = mq.load_and_reformat(name)
-    st.title("Remove Columns")
+def rm_col(df):
+    st.subheader("Remove Columns")
     cols = mq.list_all_columns(df)
     selected = st.multiselect("Select The Columns You Would Like To Remove!", cols)
 
@@ -46,17 +43,19 @@ def rm_col():
         df = p.rm_col(df, col)
     show_df(df)
 
-
-def rm_row():
-    pass
+@pysnooper.snoop()
+def rm_row(df):
+    st.subheader("Remove Rows")
+    unwanted = st.text_input("Type in the indices of all the rows you would like to remove, separated with commas:")
+    if unwanted:
+        unwanted.split(",")
+        result = p.rm_row(df, [int(i) for i in unwanted])
+        show_df(result)
 
 
 # Not tested yet
-@pysnooper.snoop()
-def replace():
-    name = st.session_state.selected_file  # these lines are repetitive, need to clean up
-    df = mq.load_and_reformat(name)
-    st.title("Remove Missing Values")
+def replace(df):
+    st.subheader("Remove Missing Values")
     cols = mq.list_all_columns(df)
     selected = st.multiselect("Select The Columns You Would Like To Edit!", cols)
     options = {"Drop Columns With Missing Values": "drop",
@@ -75,25 +74,31 @@ def replace():
             st.write("Changes Applied!")
 
 
-def op():
-    name = st.session_state.selected_file  # these lines are repetitive, need to clean up
-    df = mq.load_and_reformat(name)
-    st.title("Feature Engineering")
-    cols = mq.list_all_columns(df)
-    ops = ("+", "-", "*", "/")
-    first = st.selectbox("Select the first column", options=cols)
-    second = st.selectbox("Select the second column", options=cols)
-    operator = st.selectbox("Select the operation you would like to perform", options=ops)
-    name = st.text_input("What would you like to call the new column?")
-    result = p.operation(df=df, name=name, operator=operator, col1=first, col2=second)
-    show_df(result)
+def op(df):
+    try:
+        st.subheader("Feature Engineering")
+        cols = mq.list_all_columns(df)
+        ops = ("+", "-", "*", "/")
+        first = st.selectbox("Select the first column", options=cols)
+        second = st.selectbox("Select the second column", options=cols)
+        operator = st.selectbox("Select the operation you would like to perform", options=ops)
+        name = st.text_input("What would you like to call the new column?")
+        if first and second and operator and name:
+            result = p.operation(df=df, name=name, operator=operator, col1=first, col2=second)
+            show_df(result)
+    except ValueError:
+        st.warning("Sorry, but we can't seem to engineer this feature. Please pick another one.")
 
 
 if __name__ == "__main__":
     sidebar()
-    df = mq.load_and_reformat(st.session_state.selected_file)
+    name = st.session_state.selected_file
+    df = mq.load_and_reformat(name)
     show_df(df)
-    ohe()
-    rm_col()
-    replace()
-    op()
+    with st.container():
+        rm_col(df)
+        rm_row(df)
+    with st.container():
+        replace(df)
+        op(df)
+    ohe(df)
