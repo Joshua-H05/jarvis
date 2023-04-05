@@ -1,3 +1,4 @@
+import pysnooper
 import streamlit as st
 from jarvis import preprocessing as p
 from jarvis import mongo_query as mq
@@ -18,11 +19,11 @@ def sidebar():
 
 
 def show_df(df):
-    st.dataframe(df, height=60)
+    st.dataframe(df, height=80)
 
 
 def ohe():
-    name = st.session_state.selected_file # these lines are repetitive, need to clean up
+    name = st.session_state.selected_file  # these lines are repetitive, need to clean up
     df = mq.load_and_reformat(name)
     st.title("One Hot Encoding")
     cols = mq.list_all_columns(df)
@@ -33,10 +34,48 @@ def ohe():
         print(df)
     show_df(df)
 
-def rm():
+
+def rm_col():
+    name = st.session_state.selected_file  # these lines are repetitive, need to clean up
+    df = mq.load_and_reformat(name)
+    st.title("Remove Columns")
+    cols = mq.list_all_columns(df)
+    selected = st.multiselect("Select The Columns You Would Like To Remove!", cols)
+
+    for col in selected:
+        df = p.rm_col(df, col)
+    show_df(df)
+
+
+def rm_row():
     pass
 
 
+# Not tested yet
+@pysnooper.snoop()
+def replace():
+    name = st.session_state.selected_file  # these lines are repetitive, need to clean up
+    df = mq.load_and_reformat(name)
+    st.title("Remove Missing Values")
+    cols = mq.list_all_columns(df)
+    selected = st.multiselect("Select The Columns You Would Like To Edit!", cols)
+    options = {"Drop Columns With Missing Values": "drop",
+               "Replace Missing Values With Zeros": "zeros",
+               "Replace Missing Values With The Mean Value Of The Column": "mean",
+               "Replace Missing Values With The Median Value Of The Column": "median",
+               }
+    option = st.radio(label="Select The Method You Would Like To Use", options=options.keys())
+    if st.button("Apply Changes!"):
+        result = p.replace(df, selected, options[option])
+        show_df(result)
+
+        if result.equals(df):  # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html
+            st.write("No Missing Values!")
+        else:
+            st.write("Changes Applied!")
+
+
+def op():
 
 
 
@@ -45,3 +84,5 @@ if __name__ == "__main__":
     df = mq.load_and_reformat(st.session_state.selected_file)
     show_df(df)
     ohe()
+    rm_col()
+    replace()

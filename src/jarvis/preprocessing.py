@@ -1,4 +1,5 @@
 import pandas as pd
+import pysnooper
 
 
 def normalize(df):
@@ -16,7 +17,6 @@ def replace(df, column, method):
     elif method == "median":
         median = df[column].median()
         df[column].fillna(median)
-
     return df
 
 # Hands on machine learning with scikit learn and tensor flow pg. 60
@@ -42,6 +42,7 @@ def rm_row(df, *args):
         df = df.drop(row, axis=0)
     df = df.reset_index(drop=True)
     return df
+
 
 def operation(df, name, operator, col1, col2):
     if operator == "+":
