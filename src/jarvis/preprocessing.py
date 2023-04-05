@@ -45,14 +45,17 @@ def rm_row(df, *args):
 
 
 def operation(df, name, operator, col1, col2):
+    print(type(df[col1]))
+    first = df[col1].astype("float32")
+    second = df[col2].astype("float32")
     if operator == "+":
-        df[name] = df[col1] + df[col2]
+        df[name] = first + second
     elif operator == "-":
-        df[name] = df[col1] - df[col2]
+        df[name] = first - second
     elif operator == "*":
-        df[name] = df[col1] * df[col2]
+        df[name] = first * second
     elif operator == "/":
-        df[name] = df[col1] / df[col2]
+        df[name] = first / second
 
     return df
 

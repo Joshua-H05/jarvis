@@ -76,7 +76,17 @@ def replace():
 
 
 def op():
-    pass
+    name = st.session_state.selected_file  # these lines are repetitive, need to clean up
+    df = mq.load_and_reformat(name)
+    st.title("Feature Engineering")
+    cols = mq.list_all_columns(df)
+    ops = ("+", "-", "*", "/")
+    first = st.selectbox("Select the first column", options=cols)
+    second = st.selectbox("Select the second column", options=cols)
+    operator = st.selectbox("Select the operation you would like to perform", options=ops)
+    name = st.text_input("What would you like to call the new column?")
+    result = p.operation(df=df, name=name, operator=operator, col1=first, col2=second)
+    show_df(result)
 
 
 if __name__ == "__main__":
@@ -86,3 +96,4 @@ if __name__ == "__main__":
     ohe()
     rm_col()
     replace()
+    op()
