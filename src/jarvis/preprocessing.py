@@ -2,10 +2,6 @@ import pandas as pd
 import pysnooper
 
 
-def normalize(df):
-    pass
-
-
 def replace(df, column, method):
     if method == "drop":
         df[column].dropna()
