@@ -1,22 +1,28 @@
-from gtts import gTTS
-from playsound import playsound
+import pathlib
+
+# from gtts import gTTS
+# from playsound import playsound
+
+DIR = pathlib.Path.cwd() / "src/jarvis/voices/"
 
 greeting = "Hello, nice to meet you! I'm Jarvis"
 
-ques_func_type = \
-    "How may I help you today? Would you like to Calculate statistical key figures," \
+ques_func_type = (
+    "How may I help you today? Would you like to Calculate statistical key figures,"
     " generate a visualization or predict?"
-
+)
+questions = {}
 ques_ds = "Which data set should I use?"
-
+questions["dataset"] = {"Which data set should I use?", "gretting.mp3"}  # etc
 ques_columns = "Which columns would you like to use?"
 
 request_repetition = "I'm not sure I understand. Could you repeat please?"
 
-ques_graphs = "What type of graph would you like me to create? A pie chart, or a histogram?"
+ques_graphs = (
+    "What type of graph would you like me to create? A pie chart, or a histogram?"
+)
 
-ques_pred = \
-    "Which prediction algorithm should I use? Linear regression, logistic regression or k-means clustering?"
+ques_pred = "Which prediction algorithm should I use? Linear regression, logistic regression or k-means clustering?"
 
 ques_stat_figs = "Which statistical figures should I calculate? The mean, the median or the standard deviation?"
 
@@ -27,6 +33,11 @@ error_column_not_found = "Sorry, but I wasn't able to find the column you reques
 ques_algo = "What is the name of the model you would like to use?"
 
 ques_mlds = "Which dataset would you like to perform the prediction on?"
+
+
+def generate(question):  # from the dict
+    tts = gTTS(question)
+    tts.save(f"{DIR}/{file_name}")
 
 
 def generate_greeting(ques):
