@@ -47,8 +47,9 @@ def rm_row():
     df = st.session_state["df"]
     st.subheader("Remove Rows")
     unwanted = st.text_input("Type in the indices of all the rows you would like to remove, separated with commas:")
+    print(type(unwanted))
     if unwanted:
-        unwanted.split(",")
+        unwanted = unwanted.split(",")
         result = p.rm_row(df, [int(i) for i in unwanted])
         st.dataframe(result, height=80)
         st.session_state["df"] = result
@@ -71,7 +72,7 @@ def replace():
         st.dataframe(result, height=80)
         st.session_state["df"] = result
         if result.equals(df):  # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html
-            st.success("No Missing Values!")
+            st.success("Data appears to be complete!")
         else:
             st.success("Changes Applied!")
 
