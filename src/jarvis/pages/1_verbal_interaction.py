@@ -17,17 +17,17 @@ def reformat(utterance):
             filtered.append(word)
     return filtered
 
-
+@pysnooper.snoop()
 def greet():
-    message(speak.greeting)
-    speak.greet()
+    message(speak.utterances["greeting"][0])
+    speak.say("greeting")
 
 
 # Layer 1
 def ask_func_type():
     if st.session_state["run"]:
-        message(speak.ques_func_type)
-        speak.ask_func_type()
+        message(speak.utterances["func_type"][0])
+        speak.say("func_type")
         utterance = rr.record_and_recognize()["text"]
         message(utterance, is_user=True)
         intent = reformat(utterance)
@@ -40,6 +40,7 @@ def parse_func_type():
     calc_stat_figs = ["calculate", "statistical", "key", "figures"]
 
     if st.session_state["run"]:
+        greet()
         while True:
             intent = ask_func_type()
             if generate_visualization == intent:
@@ -49,15 +50,15 @@ def parse_func_type():
             elif calc_stat_figs == intent:
                 return "figs"
             else:
-                speak.ask_repeat()
-                message(speak.request_repetition)
+                speak.say("request_repetition")
+                message(speak.utterances["request_repetition"][0])
 
 
 # Layer 2
 def ask_ds():
     if st.session_state["run"]:
-        message(speak.ques_ds)
-        speak.ask_ds()
+        message(speak.utterances["ques_ds"][0])
+        speak.say("quest_ds")
         response_df = rr.record_and_recognize()["text"]
         message(response_df, is_user=True)
         return response_df
@@ -65,8 +66,8 @@ def ask_ds():
 
 def ask_mlds():
     if st.session_state["run"]:
-        message(speak.ques_mlds)
-        speak.ask_pred_data()
+        message(speak.utterances["ques_mlds"][0])
+        speak.say("ques_mlds")
         data = rr.record_and_recognize()["text"]
         message(data, is_user=True)
         return data
@@ -74,8 +75,8 @@ def ask_mlds():
 
 def ask_model():
     if st.session_state["run"]:
-        message(speak.ques_algo)
-        speak.ask_algo()
+        message(speak.utterances["ques_algo"][0])
+        speak.say("ques_algo")
         response_df = rr.record_and_recognize()["text"]
         message(response_df, is_user=True)
         return response_df
@@ -90,8 +91,8 @@ def verify_mlds():
                 df = mq.load_and_reformat(response_df)
                 return df
             else:
-                message(speak.error_df_not_found)
-                speak.say_error_df_not_found()
+                message(speak.utterances["error_df_not_found"][0])
+                speak.say("error_df_not_found")
 
 
 def verify_ds():
@@ -107,15 +108,15 @@ def verify_ds():
                 st.dataframe(df)
                 return df
             else:
-                message(speak.error_df_not_found)
-                speak.say_error_df_not_found()
+                message(speak.utterances["error_df_not_found"][0])
+                speak.say("error_df_not_found")
 
 
 # Layer 3
 def ask_data():
     if st.session_state["run"]:
-        message(speak.ques_columns)
-        speak.ask_columns()
+        message(speak.utterances["ques_columns"][0])
+        speak.say("ques_columns")
         response_columns = rr.record_and_recognize()["text"].strip()
         message(response_columns, is_user=True)
         return response_columns
@@ -132,8 +133,8 @@ def parse_data(df):
             if response_columns in columns:
                 return response_columns
             else:
-                message(speak.error_column_not_found)
-                speak.say_error_column_not_found()
+                message(speak.utterances["error_column_not_found"][0])
+                speak.say("error_column_not_found")
 
 
 # Layer 4
@@ -142,8 +143,8 @@ def parse_vis(df, column):
     pie = ["pie", "chart"]
 
     if st.session_state["run"]:
-        message(speak.ques_graphs)
-        speak.ask_graphs()
+        message(speak.utterances["ques_graphs"][0])
+        speak.say("ques_graphs")
         response_graph = rr.record_and_recognize()["text"]
         message(response_graph, is_user=True)
         intent = reformat(response_graph)
@@ -153,14 +154,15 @@ def parse_vis(df, column):
         elif pie == intent:
             return compute.plot_pie_chart(dataframe=df, column=column)
         else:
-            speak.ask_repeat()
+            speak.say("request_repetition")
+            message(speak.utterances["request_repetition"][0])
             parse_vis(df, column)
 
 
 def ask_predict():
     if st.session_state["run"]:
-        message(speak.ques_algo)
-        speak.ask_algo()
+        message(speak.utterances["ques_algo"][0])
+        speak.say("ques_algo")
         utterance = rr.record_and_recognize()["text"]
         message(utterance, is_user=True)
         return utterance
@@ -179,14 +181,14 @@ def parse_predict():
             elif log_reg == intent:
                 print("log_reg")
             else:
-                message(speak.request_repetition)
-                speak.ask_repeat()
+                speak.say("request_repetition")
+                message(speak.utterances["request_repetition"][0])
 
 
 def ask_stat_figs():
     if st.session_state["run"]:
-        message(speak.ques_stat_figs)
-        speak.ask_stat_figs()
+        message(speak.utterances["ques_stat_figs"][0])
+        speak.say("ques_stat_figs")
         response_stat_figs = rr.record_and_recognize()["text"]
         message(response_stat_figs, is_user=True)
         intent = reformat(response_stat_figs)
@@ -220,8 +222,8 @@ def parse_stat_figs(df, column):
                 st.write(str(median_fig))
                 break
             else:
-                speak.ask_repeat()
-                st.write(speak.request_repetition)
+                speak.say("request_repetition")
+                message(speak.utterances["request_repetition"][0])
 
 
 def info():
@@ -239,9 +241,8 @@ def parse_model():
             if response in collections:
                 return response
             else:
-                message(speak.error_df_not_found)
-                speak.say_error_df_not_found()
-
+                message(speak.utterances["error_df_not_found"][0])
+                speak.say("error_df_not_found")
 
 def verbal_interaction():
     st.session_state["run"] = False
@@ -264,7 +265,6 @@ def verbal_interaction():
         st.session_state["run"] = False
 
     while st.session_state["run"]:
-        greet()
         func_type = parse_func_type()
         if func_type == "pred":
             model = parse_model()
