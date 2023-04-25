@@ -132,7 +132,7 @@ def recognize(file):
 
 
 def record_and_recognize():
-    record_autostop()
+    record()
     return recognize(SPEECH_FILE)
 
 

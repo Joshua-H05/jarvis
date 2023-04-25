@@ -58,7 +58,7 @@ def parse_func_type():
 def ask_ds():
     if st.session_state["run"]:
         message(speak.utterances["ques_ds"][0])
-        speak.say("quest_ds")
+        speak.say("ques_ds")
         response_df = rr.record_and_recognize()["text"]
         message(response_df, is_user=True)
         return response_df
