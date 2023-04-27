@@ -25,8 +25,10 @@ def greet():
 
 # Layer 1
 def ask_func_type():
+    key = 0
     if st.session_state["run"]:
-        message(speak.utterances["func_type"][0])
+        key += 1
+        message(speak.utterances["func_type"][0], key=key)
         speak.say("func_type")
         utterance = rr.record_and_recognize()["text"]
         message(utterance, is_user=True)
@@ -51,7 +53,7 @@ def parse_func_type():
                 return "figs"
             else:
                 speak.say("request_repetition")
-                message(speak.utterances["request_repetition"][0])
+                message(speak.utterances["request_repetition"][0], key=2)
 
 
 # Layer 2
@@ -122,6 +124,7 @@ def ask_data():
         return response_columns
 
 
+@pysnooper.snoop()
 def parse_data(df):
     # load list & column names into lists
     # parse info on which columns& rows the user wants to use

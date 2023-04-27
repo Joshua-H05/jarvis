@@ -10,28 +10,32 @@ CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
 RATE = 44100
 
+
 def is_silent(snd_data):
     "Returns 'True' if below the 'silent' threshold"
     return max(snd_data) < THRESHOLD
 
+
 def normalize(snd_data):
     "Average the volume out"
     MAXIMUM = 16384
-    times = float(MAXIMUM)/max(abs(i) for i in snd_data)
+    times = float(MAXIMUM) / max(abs(i) for i in snd_data)
 
     r = array('h')
     for i in snd_data:
-        r.append(int(i*times))
+        r.append(int(i * times))
     return r
+
 
 def trim(snd_data):
     "Trim the blank spots at the start and end"
+
     def _trim(snd_data):
         snd_started = False
         r = array('h')
 
         for i in snd_data:
-            if not snd_started and abs(i)>THRESHOLD:
+            if not snd_started and abs(i) > THRESHOLD:
                 snd_started = True
                 r.append(i)
 
@@ -48,6 +52,7 @@ def trim(snd_data):
     snd_data.reverse()
     return snd_data
 
+
 def add_silence(snd_data, seconds):
     "Add silence to the start and end of 'snd_data' of length 'seconds' (float)"
     silence = [0] * int(seconds * RATE)
@@ -55,6 +60,7 @@ def add_silence(snd_data, seconds):
     r.extend(snd_data)
     r.extend(silence)
     return r
+
 
 def record():
     """
@@ -68,8 +74,8 @@ def record():
     """
     p = pyaudio.PyAudio()
     stream = p.open(format=FORMAT, channels=1, rate=RATE,
-        input=True, output=True,
-        frames_per_buffer=CHUNK_SIZE)
+                    input=True, output=True,
+                    frames_per_buffer=CHUNK_SIZE)
 
     num_silent = 0
     snd_started = False
@@ -103,10 +109,12 @@ def record():
     r = add_silence(r, 0.5)
     return sample_width, r
 
+
 def record_to_file(path):
     "Records from the microphone and outputs the resulting data to 'path'"
+    print("please speak a word into the microphone")
     sample_width, data = record()
-    data = pack('<' + ('h'*len(data)), *data)
+    data = pack('<' + ('h' * len(data)), *data)
 
     wf = wave.open(path, 'wb')
     wf.setnchannels(1)
@@ -114,11 +122,13 @@ def record_to_file(path):
     wf.setframerate(RATE)
     wf.writeframes(data)
     wf.close()
+    print("done")
+
+
 
 if __name__ == '__main__':
     print("please speak a word into the microphone")
     record_to_file('demo.wav')
     print("done - result written to demo.wav")
-
 
 # Found on stackoverflow, date: 22, April 2023 by Tomasz Gandor

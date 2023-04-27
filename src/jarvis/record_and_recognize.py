@@ -4,14 +4,14 @@ import datetime
 from google.oauth2 import service_account
 from google.cloud import speech
 import streamlit as st
-import pysnooper
+
+from jarvis import autostop
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
 THRESHOLD = bytes(180)
-
 
 
 def generate_file_name():
@@ -40,45 +40,6 @@ def record():
         frames.append(data)
 
     print("recording stopped")
-
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-
-    wf = wave.open(SPEECH_FILE, "wb")
-    wf.setnchannels(CHANNELS)
-    wf.setsampwidth(p.get_sample_size(FORMAT))
-    wf.setframerate(RATE)
-    wf.writeframes(b"".join(frames))
-    wf.close()
-
-
-@pysnooper.snoop()
-def record_autostop():
-    p = pyaudio.PyAudio()
-
-    stream = p.open(format=FORMAT,
-                    channels=CHANNELS,
-                    rate=RATE,
-                    input=True,
-                    frames_per_buffer=CHUNK)
-
-    print("Start recording...")
-
-    frames = []
-    last_sec = []
-    chunks_per_sec = int(RATE / CHUNK)
-    while True:
-        for i in range(chunks_per_sec):
-            data = stream.read(CHUNK)
-            print(type(data))
-            """last_sec.append(data)
-        if []:
-            print("recording stopped")
-            break
-        else:
-            for frame in last_sec:
-                frames.append(frame)"""
 
     stream.stop_stream()
     stream.close()
@@ -132,7 +93,7 @@ def recognize(file):
 
 
 def record_and_recognize():
-    record()
+    autostop.record_to_file(SPEECH_FILE)
     return recognize(SPEECH_FILE)
 
 
