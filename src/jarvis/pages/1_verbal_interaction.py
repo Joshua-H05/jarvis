@@ -7,6 +7,8 @@ from streamlit_chat import message
 
 from jarvis import speak, mongo_query as mq, record_and_recognize as rr, compute, ml
 
+KEY = 0
+
 
 def reformat(utterance):
     filtered = []
@@ -17,7 +19,7 @@ def reformat(utterance):
             filtered.append(word)
     return filtered
 
-@pysnooper.snoop()
+
 def greet():
     message(speak.utterances["greeting"][0])
     speak.say("greeting")
@@ -25,10 +27,10 @@ def greet():
 
 # Layer 1
 def ask_func_type():
-    key = 0
     if st.session_state["run"]:
-        key += 1
-        message(speak.utterances["func_type"][0], key=key)
+        global KEY
+        KEY += 1
+        message(speak.utterances["func_type"][0], key=str(KEY))
         speak.say("func_type")
         utterance = rr.record_and_recognize()["text"]
         message(utterance, is_user=True)
@@ -52,35 +54,46 @@ def parse_func_type():
             elif calc_stat_figs == intent:
                 return "figs"
             else:
+                global KEY
+                KEY += 1
                 speak.say("request_repetition")
-                message(speak.utterances["request_repetition"][0], key=2)
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
 
 
 # Layer 2
 def ask_ds():
     if st.session_state["run"]:
-        message(speak.utterances["ques_ds"][0])
+        global KEY
+        KEY += 1
+        message(speak.utterances["ques_ds"][0], key=str(KEY))
         speak.say("ques_ds")
         response_df = rr.record_and_recognize()["text"]
-        message(response_df, is_user=True)
+        KEY += 1
+        message(response_df, is_user=True, key=str(KEY))
         return response_df
 
 
 def ask_mlds():
     if st.session_state["run"]:
-        message(speak.utterances["ques_mlds"][0])
+        global KEY
+        KEY += 1
+        message(speak.utterances["ques_mlds"][0], key=str(KEY))
         speak.say("ques_mlds")
         data = rr.record_and_recognize()["text"]
-        message(data, is_user=True)
+        KEY += 1
+        message(data, is_user=True, key=str(KEY))
         return data
 
 
 def ask_model():
     if st.session_state["run"]:
-        message(speak.utterances["ques_algo"][0])
+        global KEY
+        KEY += 1
+        message(speak.utterances["ques_algo"][0], key=str(KEY))
         speak.say("ques_algo")
         response_df = rr.record_and_recognize()["text"]
-        message(response_df, is_user=True)
+        KEY += 1
+        message(response_df, is_user=True, key=str(KEY))
         return response_df
 
 
@@ -93,7 +106,9 @@ def verify_mlds():
                 df = mq.load_and_reformat(response_df)
                 return df
             else:
-                message(speak.utterances["error_df_not_found"][0])
+                global KEY
+                KEY += 1
+                message(speak.utterances["error_df_not_found"][0], key=str(KEY))
                 speak.say("error_df_not_found")
 
 
@@ -110,21 +125,25 @@ def verify_ds():
                 st.dataframe(df)
                 return df
             else:
-                message(speak.utterances["error_df_not_found"][0])
+                global KEY
+                KEY += 1
+                message(speak.utterances["error_df_not_found"][0], key=str(KEY))
                 speak.say("error_df_not_found")
 
 
 # Layer 3
 def ask_data():
     if st.session_state["run"]:
-        message(speak.utterances["ques_columns"][0])
+        global KEY
+        KEY += 1
+        message(speak.utterances["ques_columns"][0], key=str(KEY))
         speak.say("ques_columns")
         response_columns = rr.record_and_recognize()["text"].strip()
-        message(response_columns, is_user=True)
+        KEY += 1
+        message(response_columns, is_user=True, key=str(KEY))
         return response_columns
 
 
-@pysnooper.snoop()
 def parse_data(df):
     # load list & column names into lists
     # parse info on which columns& rows the user wants to use
@@ -136,7 +155,9 @@ def parse_data(df):
             if response_columns in columns:
                 return response_columns
             else:
-                message(speak.utterances["error_column_not_found"][0])
+                global KEY
+                KEY += 1
+                message(speak.utterances["error_column_not_found"][0], key=str(KEY))
                 speak.say("error_column_not_found")
 
 
@@ -146,10 +167,13 @@ def parse_vis(df, column):
     pie = ["pie", "chart"]
 
     if st.session_state["run"]:
-        message(speak.utterances["ques_graphs"][0])
+        global KEY
+        KEY += 1
+        message(speak.utterances["ques_graphs"][0], key=str(KEY))
         speak.say("ques_graphs")
         response_graph = rr.record_and_recognize()["text"]
-        message(response_graph, is_user=True)
+        KEY += 1
+        message(response_graph, is_user=True, key=str(KEY))
         intent = reformat(response_graph)
 
         if hist == intent:
@@ -157,17 +181,21 @@ def parse_vis(df, column):
         elif pie == intent:
             return compute.plot_pie_chart(dataframe=df, column=column)
         else:
+            KEY += 1
             speak.say("request_repetition")
-            message(speak.utterances["request_repetition"][0])
+            message(speak.utterances["request_repetition"][0], key=str(KEY))
             parse_vis(df, column)
 
 
 def ask_predict():
     if st.session_state["run"]:
-        message(speak.utterances["ques_algo"][0])
+        global KEY
+        KEY += 1
+        message(speak.utterances["ques_algo"][0], key=str(KEY))
         speak.say("ques_algo")
         utterance = rr.record_and_recognize()["text"]
-        message(utterance, is_user=True)
+        KEY += 1
+        message(utterance, is_user=True, key=str(KEY))
         return utterance
 
 
@@ -184,21 +212,25 @@ def parse_predict():
             elif log_reg == intent:
                 print("log_reg")
             else:
+                global KEY
+                KEY += 1
                 speak.say("request_repetition")
-                message(speak.utterances["request_repetition"][0])
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
 
 
 def ask_stat_figs():
     if st.session_state["run"]:
-        message(speak.utterances["ques_stat_figs"][0])
+        global KEY
+        KEY += 1
+        message(speak.utterances["ques_stat_figs"][0], key=str(KEY))
         speak.say("ques_stat_figs")
         response_stat_figs = rr.record_and_recognize()["text"]
-        message(response_stat_figs, is_user=True)
+        KEY += 1
+        message(response_stat_figs, is_user=True, key=str(KEY))
         intent = reformat(response_stat_figs)
         return intent
 
 
-@pysnooper.snoop(depth=2)
 def parse_stat_figs(df, column):
     avg = ["average"]
     stdev = ["standard", "deviation"]
@@ -225,8 +257,10 @@ def parse_stat_figs(df, column):
                 st.write(str(median_fig))
                 break
             else:
+                global KEY
+                KEY += 1
                 speak.say("request_repetition")
-                message(speak.utterances["request_repetition"][0])
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
 
 
 def info():
@@ -244,9 +278,13 @@ def parse_model():
             if response in collections:
                 return response
             else:
-                message(speak.utterances["error_df_not_found"][0])
-                speak.say("error_df_not_found")
+                global KEY
+                KEY += 1
+                message(speak.utterances["model_not_found"][0], key=str(KEY))
+                speak.say("model_not_found")
 
+
+@pysnooper.snoop()
 def verbal_interaction():
     st.session_state["run"] = False
 

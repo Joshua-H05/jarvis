@@ -2,9 +2,7 @@ from gtts import gTTS
 from playsound import playsound
 import pathlib
 
-
 DIR = pathlib.Path.cwd() / "src/jarvis/voices/"
-
 
 utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
                            "/Users/joshua/ws/jarvis/src/jarvis/voices/greeting.mp3"],
@@ -40,14 +38,23 @@ utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
               "ques_algo": ["What is the name of the model you would like to use?",
                             "/Users/joshua/ws/jarvis/src/jarvis/voices/ques_algo.mp3"],
               "ques_mlds": ["Which dataset would you like to perform the prediction on?",
-                            "/Users/joshua/ws/jarvis/src/jarvis/voices/ques_pred_data.mp3"]
+                            "/Users/joshua/ws/jarvis/src/jarvis/voices/ques_pred_data.mp3"],
+              "model_not_found": ["Sorry, but I wasn't able to find the model you requested",
+                                  "/Users/joshua/ws/jarvis/src/jarvis/voices/model_not_found.mp3"]
               }
 
 
 def generate_all_files():
     for utterance in utterances.values():
-        tts = gTTS(utterance[0])
+        tts = gTTS(utterance[0], lang='en', tld='us')
         tts.save(utterance[1])
+
+
+def generate_file(utterance):
+    sound = utterances[utterance][0]
+    path = utterances[utterance][1]
+    tts = gTTS(sound, lang='en', tld='us')
+    tts.save(path)
 
 
 def say(utterance):
@@ -56,5 +63,5 @@ def say(utterance):
 
 
 if __name__ == "__main__":
-    generate_all_files()
-    say("greeting")
+    generate_file("model_not_found")
+    say("model_not_found")
