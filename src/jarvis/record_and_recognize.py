@@ -4,6 +4,7 @@ import datetime
 from google.oauth2 import service_account
 from google.cloud import speech
 import streamlit as st
+import pysnooper
 
 from jarvis import autostop
 
@@ -62,6 +63,7 @@ def read_file(filename, chunk_size=5242880):
             yield data
 
 
+@pysnooper.snoop()
 def recognize(file):
     credentials = service_account.Credentials.from_service_account_info(
         st.secrets["google_key"])

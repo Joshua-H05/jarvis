@@ -27,14 +27,22 @@ def greet():
 # Layer 1
 def ask_func_type():
     if st.session_state["run"]:
-        global KEY
-        KEY += 1
-        message(speak.utterances["func_type"][0], key=str(KEY))
-        speak.say("func_type")
-        utterance = rr.record_and_recognize()["text"]
-        message(utterance, is_user=True)
-        intent = reformat(utterance)
-        return intent
+        while True:
+            global KEY
+            KEY += 1
+            message(speak.utterances["func_type"][0], key=str(KEY))
+            speak.say("func_type")
+            transcription = rr.record_and_recognize()
+            if transcription:
+                utterance = transcription["text"]
+                KEY += 1
+                message(utterance, is_user=True, key=str(KEY))
+                intent = reformat(utterance)
+                return intent
+            else:
+                KEY += 1
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                speak.say("request_repetition")
 
 
 def parse_func_type():
@@ -62,38 +70,59 @@ def parse_func_type():
 # Layer 2
 def ask_ds():
     if st.session_state["run"]:
-        global KEY
-        KEY += 1
-        message(speak.utterances["ques_ds"][0], key=str(KEY))
-        speak.say("ques_ds")
-        response_df = rr.record_and_recognize()["text"]
-        KEY += 1
-        message(response_df, is_user=True, key=str(KEY))
-        return response_df
+        while True:
+            global KEY
+            KEY += 1
+            message(speak.utterances["ques_ds"][0], key=str(KEY))
+            speak.say("ques_ds")
+            response_df = rr.record_and_recognize()
+            if response_df:
+                utterance = response_df["text"]
+                KEY += 1
+                message(utterance, is_user=True, key=str(KEY))
+                return utterance
+            else:
+                KEY += 1
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                speak.say("request_repetition")
 
 
 def ask_mlds():
     if st.session_state["run"]:
-        global KEY
-        KEY += 1
-        message(speak.utterances["ques_mlds"][0], key=str(KEY))
-        speak.say("ques_mlds")
-        data = rr.record_and_recognize()["text"]
-        KEY += 1
-        message(data, is_user=True, key=str(KEY))
-        return data
+        while True:
+            global KEY
+            KEY += 1
+            message(speak.utterances["ques_mlds"][0], key=str(KEY))
+            speak.say("ques_mlds")
+            data = rr.record_and_recognize()
+            if data:
+                utterance = data["text"]
+                KEY += 1
+                message(utterance, is_user=True, key=str(KEY))
+                return utterance
+            else:
+                KEY += 1
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                speak.say("request_repetition")
 
 
 def ask_model():
     if st.session_state["run"]:
-        global KEY
-        KEY += 1
-        message(speak.utterances["ques_algo"][0], key=str(KEY))
-        speak.say("ques_algo")
-        response_df = rr.record_and_recognize()["text"]
-        KEY += 1
-        message(response_df, is_user=True, key=str(KEY))
-        return response_df
+        while True:
+            global KEY
+            KEY += 1
+            message(speak.utterances["ques_algo"][0], key=str(KEY))
+            speak.say("ques_algo")
+            response_df = rr.record_and_recognize()
+            if response_df:
+                utterance = response_df["text"]
+                KEY += 1
+                message(utterance, is_user=True, key=str(KEY))
+                return utterance
+            else:
+                KEY += 1
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                speak.say("request_repetition")
 
 
 def verify_mlds():
@@ -133,14 +162,21 @@ def verify_ds():
 # Layer 3
 def ask_data():
     if st.session_state["run"]:
-        global KEY
-        KEY += 1
-        message(speak.utterances["ques_columns"][0], key=str(KEY))
-        speak.say("ques_columns")
-        response_columns = rr.record_and_recognize()["text"].strip()
-        KEY += 1
-        message(response_columns, is_user=True, key=str(KEY))
-        return response_columns
+        while True:
+            global KEY
+            KEY += 1
+            message(speak.utterances["ques_columns"][0], key=str(KEY))
+            speak.say("ques_columns")
+            response_columns = rr.record_and_recognize()
+            if response_columns:
+                utterance = response_columns["text"].strip()
+                KEY += 1
+                message(utterance, is_user=True, key=str(KEY))
+                return utterance
+            else:
+                KEY += 1
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                speak.say("request_repetition")
 
 
 def parse_data(df):
@@ -166,24 +202,31 @@ def parse_vis(df, column):
     pie = ["pie", "chart"]
 
     if st.session_state["run"]:
-        global KEY
-        KEY += 1
-        message(speak.utterances["ques_graphs"][0], key=str(KEY))
-        speak.say("ques_graphs")
-        response_graph = rr.record_and_recognize()["text"]
-        KEY += 1
-        message(response_graph, is_user=True, key=str(KEY))
-        intent = reformat(response_graph)
-
-        if hist == intent:
-            compute.plot_histogram(dataframe=df, column=column)
-        elif pie == intent:
-            return compute.plot_pie_chart(dataframe=df, column=column)
-        else:
+        while True:
+            global KEY
             KEY += 1
-            speak.say("request_repetition")
-            message(speak.utterances["request_repetition"][0], key=str(KEY))
-            parse_vis(df, column)
+            message(speak.utterances["ques_graphs"][0], key=str(KEY))
+            speak.say("ques_graphs")
+            response_graph = rr.record_and_recognize()
+            if response_graph:
+                utterance = response_graph["text"]
+                KEY += 1
+                message(utterance, is_user=True, key=str(KEY))
+                intent = reformat(utterance)
+
+                if hist == intent:
+                    return compute.plot_histogram(dataframe=df, column=column)
+                elif pie == intent:
+                    return compute.plot_pie_chart(dataframe=df, column=column)
+                else:
+                    KEY += 1
+                    speak.say("request_repetition")
+                    message(speak.utterances["request_repetition"][0], key=str(KEY))
+                    parse_vis(df, column)
+            else:
+                KEY += 1
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                speak.say("request_repetition")
 
 
 def ask_predict():
@@ -219,15 +262,22 @@ def parse_predict():
 
 def ask_stat_figs():
     if st.session_state["run"]:
-        global KEY
-        KEY += 1
-        message(speak.utterances["ques_stat_figs"][0], key=str(KEY))
-        speak.say("ques_stat_figs")
-        response_stat_figs = rr.record_and_recognize()["text"]
-        KEY += 1
-        message(response_stat_figs, is_user=True, key=str(KEY))
-        intent = reformat(response_stat_figs)
-        return intent
+        while True:
+            global KEY
+            KEY += 1
+            message(speak.utterances["ques_stat_figs"][0], key=str(KEY))
+            speak.say("ques_stat_figs")
+            response_stat_figs = rr.record_and_recognize()
+            if response_stat_figs:
+                utterance = response_stat_figs["text"]
+                KEY += 1
+                message(utterance, is_user=True, key=str(KEY))
+                intent = reformat(utterance)
+                return intent
+            else:
+                KEY += 1
+                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                speak.say("request_repetition")
 
 
 def parse_stat_figs(df, column):
