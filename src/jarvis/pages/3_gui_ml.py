@@ -25,7 +25,6 @@ def select_train_model():
     st.session_state["model_type"] = st.selectbox("Select the algorithm you would like to use!", algos, key="plot_type")
 
 
-
 @pysnooper.snoop()
 def train_model():
     df = mq.load_and_reformat(st.session_state.selected_file)
@@ -69,9 +68,13 @@ def predict():
     if st.session_state.selected_file:
         df = mq.load_and_reformat(st.session_state.selected_file)
         if st.session_state.model:
-            model = st.session_state.model
-            result = ml.predict_stored_model(model, df)
-            st.dataframe(result)
+            try:
+                model = st.session_state.model
+                result = ml.predict_stored_model(model, df)
+                st.dataframe(result)
+            except ValueError:
+                st.warning("Sorry, but some of the columns in the dataset you selected seem to be of the wrong type. "
+                           "You may have to reengineer some of your features")
 
 
 if __name__ == "__main__":

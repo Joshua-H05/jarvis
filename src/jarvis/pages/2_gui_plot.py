@@ -14,9 +14,10 @@ def sidebar_list_ds():
 # Main section
 
 def select_plot_type():
-    plot_types = ["Pie Chart", "Histogram", "Scatter Plot"]
+    plot_types = ["Pie Chart", "Histogram", "Scatter Plot", "Bar Chart"]
+    double_vars = ["Scatter Plot", "Bar Chart"]
     st.selectbox("Select the type of graph you would like to create!", plot_types, key="plot_type")
-    if st.session_state.plot_type == "Scatter Plot":
+    if st.session_state.plot_type in double_vars:
         double_plot_var()
     else:
         single_plot_var()
@@ -54,6 +55,14 @@ def parse_func():
             x = st.session_state.x_axis
             y = st.session_state.y_axis
             compute.plot_scatter_plot(df, x_var=x, y_var=y)
+        except TypeError:
+            st.warning("Sorry, but we could not plot the data you have selected. Please try something else.")
+
+    if st.session_state.plot_type == "Bar Chart" and st.session_state.x_axis and st.session_state.y_axis:
+        try:
+            x = st.session_state.x_axis
+            y = st.session_state.y_axis
+            compute.plot_bar_chart(df, x=x, y=y)
         except TypeError:
             st.warning("Sorry, but we could not plot the data you have selected. Please try something else.")
 

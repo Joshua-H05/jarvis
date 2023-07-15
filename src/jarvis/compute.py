@@ -61,6 +61,10 @@ def plot_pie_chart(dataframe, column):
     fig = px.pie(dataframe, names=column, color_discrete_sequence=px.colors.sequential.RdBu)
     st.plotly_chart(fig)
 
+def plot_bar_chart(dataframe, x, y):
+    fig = px.bar(dataframe, x=x, y=y)
+    st.plotly_chart(fig)
+
 
 if __name__ == "__main__":
     df = mq.load_and_reformat("cars")
