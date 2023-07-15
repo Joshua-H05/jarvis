@@ -6,7 +6,7 @@ from pymongo import MongoClient
 import pickle
 import pysnooper
 from sklearn.preprocessing import StandardScaler
-from jarvis import secret, mongo_query as mq
+from jarvis import secret
 
 
 def train_log_reg(df, threshold):

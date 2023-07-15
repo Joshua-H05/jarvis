@@ -1,7 +1,6 @@
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import re
-import pysnooper
 import streamlit as st
 from streamlit_chat import message
 
@@ -284,7 +283,6 @@ def parse_model():
                 speak.say("model_not_found")
 
 
-@pysnooper.snoop()
 def verbal_interaction():
     st.session_state["run"] = False
 

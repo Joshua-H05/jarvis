@@ -1,4 +1,3 @@
-import pysnooper
 import streamlit as st
 
 from jarvis import preprocessing as p
@@ -43,7 +42,6 @@ def rm_col():
     st.session_state["df"] = df
 
 
-@pysnooper.snoop()
 def rm_row():
     df = st.session_state["df"]
     st.subheader("Remove Rows")

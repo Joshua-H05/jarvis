@@ -17,5 +17,6 @@ st.markdown("* On the verbal interaction page, you can talk to me and ask me to 
             "for the name of a dataset or the name of a column in a dataset, "
             "please tell me without adding any other words")
 
+
 # Sidebar section
 st.sidebar.title("Select a function above")
