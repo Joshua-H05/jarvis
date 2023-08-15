@@ -36,4 +36,4 @@ def store_uploaded_file(file, ds_name):
 
 
 if __name__ == "__main__":
-    save_ds(ds_name="customers", file="customer.csv")
+    save_ds(ds_name="customers", file="data/customer.csv")

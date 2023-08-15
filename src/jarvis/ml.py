@@ -111,7 +111,7 @@ def pred(model, df):
 if __name__ == "__main__":
     pd.set_option('display.max_rows', None)
     """df = mq.load_and_reformat("cars")"""
-    df = pd.read_csv("cars.csv")
+    df = pd.read_csv("data/cars.csv")
     while True:
         model, score = train_log_reg_cv(df)
         print(score)
