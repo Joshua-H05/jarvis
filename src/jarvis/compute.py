@@ -32,7 +32,10 @@ def compute_median(dataframe, column):
 
 def compute_mode(dataframe, column):
     mode = dataframe[column].astype(int).mode(dropna=True).tolist()
-    return mode
+    if len(mode) == 1:
+        return mode[0]
+    else:
+        return mode
 
 
 def compute_range(dataframe, column):
@@ -47,22 +50,22 @@ def standard_deviation(dataframe, column):
     return stddev
 
 
-def plot_histogram(dataframe, column):
+def plot_histogram(dataframe, column, st_col):
     fig = px.histogram(dataframe, x=column)
     st.plotly_chart(fig)
 
 
-def plot_scatter_plot(df, x_var, y_var):
+def plot_scatter_plot(df, x_var, y_var, st_col=None):
     fig = px.scatter(df, x_var, y_var)
     st.plotly_chart(fig)
 
 
-def plot_pie_chart(dataframe, column):
+def plot_pie_chart(dataframe, column, st_col=None):
     fig = px.pie(dataframe, names=column, color_discrete_sequence=px.colors.sequential.RdBu)
     st.plotly_chart(fig)
 
 
-def plot_bar_chart(dataframe, x, y):
+def plot_bar_chart(dataframe, x, y, st_col=None):
     fig = px.bar(dataframe, x=x, y=y)
     st.plotly_chart(fig)
 
