@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.write("# This is Jarvis, your personal data analysis assistant!")
+st.write("# 👋 This is Jarvis, your personal data analysis assistant!")
 st.write("## Here's a quick guide on how to use me:")
 st.markdown("This web application consists of four pages: Preprocessing, gui plot, gui ml and verbal interaction")
 st.markdown(" * On the preprocessing page, you can perform basic data cleansing tasks "
@@ -19,4 +19,4 @@ st.markdown("* On the verbal interaction page, you can talk to me and ask me to 
 
 
 # Sidebar section
-st.sidebar.title("Select a function above")
+st.sidebar.title("Select a function above! ⬆️")

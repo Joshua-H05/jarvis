@@ -1,8 +1,10 @@
 import streamlit as st
+import os
 
 from jarvis import mongo_query as mq
 from jarvis import mongodb_atlas_store_files as ms
 from jarvis import compute
+
 
 st.set_page_config(layout="wide")
 
@@ -84,7 +86,9 @@ def metrics():
 
 
 if __name__ == "__main__":
-    # sidebar
+    with open('/Users/joshua/ws/jarvis/src/jarvis/assets/styles.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    #sidebar
     user_file = st.sidebar.file_uploader("Upload your file here!")
     if user_file:
         if st.sidebar.button("Save your file in the database?"):

@@ -24,6 +24,7 @@ def dict_list_to_df(doc):
 def load_and_reformat(collection_name):
     doc = load_data(collection_name)
     reformatted = dict_list_to_df(doc)
+    reformatted.drop(columns="_id", inplace=True)
     return reformatted
 
 

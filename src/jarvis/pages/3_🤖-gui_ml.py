@@ -1,4 +1,6 @@
 import streamlit as st
+from streamlit_elements import elements, mui, html
+
 from jarvis import ml
 from jarvis import mongo_query as mq
 from jarvis import mongodb_atlas_store_files as ms
@@ -78,12 +80,15 @@ def predict():
 
 
 if __name__ == "__main__":
+    with open('/Users/joshua/ws/jarvis/src/jarvis/assets/styles.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
     sidebar()
-    with st.container():
+
+    with elements("new_element"):
         st.title("Train A Model!")
         train_model()
 
-    with st.container():
+    with elements("newer_element"):
         st.title("Perform a prediction")
         select_model()
         predict()

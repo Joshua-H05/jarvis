@@ -61,7 +61,7 @@ def plot_scatter_plot(df, x_var, y_var, st_col=None):
 
 
 def plot_pie_chart(dataframe, column, st_col=None):
-    fig = px.pie(dataframe, names=column, color_discrete_sequence=px.colors.sequential.RdBu)
+    fig = px.pie(dataframe, names=column, color_discrete_sequence=px.colors.sequential.Blues)
     st.plotly_chart(fig)
 
 
