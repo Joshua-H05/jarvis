@@ -1,3 +1,5 @@
+# Citation complete
+
 import csv
 from pymongo import MongoClient
 from jarvis import secret
@@ -5,6 +7,9 @@ import pandas as pd
 
 link = secret.mongo_link
 cluster = MongoClient(link)
+# lines 8 & 9 derived from source: https://pymongo.readthedocs.io/en/stable/tutorial.html
+# Last accessed: Feb 14, 2023
+
 
 
 def save_ds(ds_name, file):
@@ -19,9 +24,10 @@ def save(df_name, data):
 
     data = [row for row in data]
     col.insert_many(data)
+# derived from source: https://www.mongodb.com/docs/mongodb-shell/crud/insert/
+# Last accessed: Feb 14, 2023
 
 
-# function copied from streamlit https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
 def store_uploaded_file(file, ds_name):
     db = cluster["jarvis_data"]
     col = db[ds_name]
@@ -33,7 +39,8 @@ def store_uploaded_file(file, ds_name):
         print(row)
         dict_list.append(row)
     col.insert_many(dict_list)
-
+# function copied from streamlit https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
+# Last accessed: Feb 14, 2023
 
 if __name__ == "__main__":
     save_ds(ds_name="customers", file="data/customer.csv")

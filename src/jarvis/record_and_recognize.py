@@ -1,10 +1,10 @@
+# Citation complete
 import pyaudio
 import wave
 import datetime
 from google.oauth2 import service_account
 from google.cloud import speech
 import streamlit as st
-import pysnooper
 
 from jarvis import autostop
 
@@ -52,6 +52,8 @@ def record():
     wf.setframerate(RATE)
     wf.writeframes(b"".join(frames))
     wf.close()
+# Copied from tutorial: https://realpython.com/playing-and-recording-sound-python/#pyaudio
+# Last accessed: Nov 12 2022
 
 
 def read_file(filename, chunk_size=5242880):
@@ -61,9 +63,9 @@ def read_file(filename, chunk_size=5242880):
             if not data:
                 break
             yield data
+# Copied from tutorial: https://www.assemblyai.com/blog/python-speech-recognition-in-30-lines-of-code/
+# Last accessed: # Last accessed Feb 4th, 2023
 
-
-@pysnooper.snoop()
 def recognize(file):
     credentials = service_account.Credentials.from_service_account_info(
         st.secrets["google_key"])
@@ -92,7 +94,7 @@ def recognize(file):
 
 
 # source https://learndataanalysis.org/source-code-getting-started-with-google-cloud-speech-to-text-api-in-python/
-
+# Last accessed Feb 4th, 2023
 
 def record_and_recognize():
     autostop.record_to_file(SPEECH_FILE)

@@ -1,10 +1,10 @@
+# Citation complete
 import pandas as pd
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn import svm, metrics
 from sklearn.model_selection import train_test_split
 from pymongo import MongoClient
 import pickle
-import pysnooper
 from sklearn.preprocessing import StandardScaler
 from jarvis import secret
 
@@ -25,6 +25,8 @@ def train_log_reg(df, threshold):
             print(log_reg.coef_)
             return log_reg, score
 
+# Derived from Source: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+# Last accessed:  Feb 23, 2023
 
 def train_log_reg_cv(df):
     y = df["labels"]
@@ -39,6 +41,8 @@ def train_log_reg_cv(df):
     score = metrics.accuracy_score(y_test, y_pred)
     return log_reg, score
 
+# Derived from source: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegressionCV.html
+# Last accessed: Mar 3, 2023
 
 def train_svm(df):
     y = df["labels"]
@@ -53,15 +57,13 @@ def train_svm(df):
     score = metrics.accuracy_score(y_test, y_pred)
     return clf, score
 
-
-def train_decision_tree():
-    pass
+# derived from source: https://www.datacamp.com/tutorial/svm-classification-scikit-learn-python
+# Last accessed Feb 21, 2023
 
 
 link = secret.mongo_link
 cluster = MongoClient(link)
 
-@pysnooper.snoop()
 def store_ml_model(model, model_name):
     db = cluster["jarvis_models"]
     col = db[model_name]
@@ -72,9 +74,8 @@ def store_ml_model(model, model_name):
         "model_name": model_name,
     }
     return details
-
-
-# https://medium.com/up-engineering/saving-ml-and-dl-models-in-mongodb-using-python-f0bbbae256f0
+# Derived From Source: https://medium.com/up-engineering/saving-ml-and-dl-models-in-mongodb-using-python-f0bbbae256f0
+# Last accessed 8. Feb, 2023
 
 def retrieve_model(model_name):
     db = cluster["jarvis_models"]
@@ -85,6 +86,8 @@ def retrieve_model(model_name):
 
     pickled_model = json_data[model_name]
     return pickle.loads(pickled_model)
+# Derived from Source: https://medium.com/up-engineering/saving-ml-and-dl-models-in-mongodb-using-python-f0bbbae256f0
+# Last accessed 8. Feb, 2023
 
 
 def list_all_models():

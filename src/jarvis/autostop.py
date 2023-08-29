@@ -1,3 +1,4 @@
+#Citation Complete
 from sys import byteorder
 from array import array
 from struct import pack
@@ -131,4 +132,5 @@ if __name__ == '__main__':
     record_to_file('demo.wav')
     print("done - result written to demo.wav")
 
-# Found on stackoverflow, date: 22, April 2023 by Tomasz Gandor
+# Source for entire script: stackoverflow, date: 22, April 2023 by Josiah Yoder
+# https://stackoverflow.com/questions/64491394/detect-record-audio-in-python-trim-beginning-silence

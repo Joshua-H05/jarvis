@@ -1,5 +1,6 @@
+# Citation complete
+
 import pandas as pd
-import pysnooper
 
 
 def replace(df, column, method):
@@ -22,7 +23,7 @@ def one_hot(df, column):
     encoded = pd.get_dummies(data=df, columns=[column])
     return encoded
 
-# https://towardsdatascience.com/one-hot-encoding-scikit-vs-pandas-2133775567b8 4th April
+# Source: https://towardsdatascience.com/one-hot-encoding-scikit-vs-pandas-2133775567b8 4th April
 
 
 def rm_col(df, *args):
@@ -31,7 +32,7 @@ def rm_col(df, *args):
     return df
 
 
-# https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html 4th April
+# Source: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html 4th April
 
 def rm_row(df, *args):
     for row in args:
@@ -55,4 +56,4 @@ def operation(df, name, operator, col1, col2):
 
     return df
 
-# https://thispointer.com/pandas-add-two-columns-into-a-new-column-in-dataframe/ 4th April
+# Source: https://thispointer.com/pandas-add-two-columns-into-a-new-column-in-dataframe/ 4th April

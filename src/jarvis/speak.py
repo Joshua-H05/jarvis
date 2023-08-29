@@ -1,6 +1,8 @@
+# Citation complete
 from gtts import gTTS
 from playsound import playsound
 import pathlib
+
 
 DIR = pathlib.Path.cwd() / "src/jarvis/voices/"
 
@@ -49,17 +51,24 @@ def generate_all_files():
         tts = gTTS(utterance[0], lang='en', tld='us')
         tts.save(utterance[1])
 
+# Derived from source: https: // gtts.readthedocs.io / en / latest / module.html
+# Last accessed: Dec 25, 2022
+
 
 def generate_file(utterance):
     sound = utterances[utterance][0]
     path = utterances[utterance][1]
     tts = gTTS(sound, lang='en', tld='us')
     tts.save(path)
+# Derived from source: https: // gtts.readthedocs.io / en / latest / module.html
+# Last accessed: Dec 25, 2022
 
 
 def say(utterance):
     path = utterances[utterance][1]
     playsound(path)
+# Derived from source: https://github.com/TaylorSMarks/playsound
+# Last accessed: Dec 25, 2022
 
 
 if __name__ == "__main__":
