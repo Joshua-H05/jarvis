@@ -1,3 +1,6 @@
+# All functions followed by "st." leverage streamlit. The sole source consulted was the official documentation
+# provided by Streamlit: https://docs.streamlit.io
+
 import streamlit as st
 
 from jarvis import mongo_query as mq

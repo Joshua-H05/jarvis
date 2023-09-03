@@ -1,3 +1,7 @@
+# All functions followed by "st." leverage streamlit. The sole source consulted was the official documentation
+# provided by Streamlit: https://docs.streamlit.io
+
+
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import re

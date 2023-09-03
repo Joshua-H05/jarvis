@@ -1,3 +1,7 @@
+# All functions followed by "st." leverage streamlit. The sole source consulted was the official documentation
+# provided by Streamlit: https://docs.streamlit.io
+
+
 import streamlit as st
 
 from jarvis import preprocessing as p
@@ -113,3 +117,7 @@ if __name__ == "__main__":
     op()
     ohe()
     save()
+
+
+# All functions followed by "st." leverage streamlit. The sole source consulted was the official documentation
+# provided by Streamlit: https://docs.streamlit.io
