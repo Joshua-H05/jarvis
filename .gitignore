@@ -52,7 +52,6 @@ MANIFEST
 .venv*/
 .conda*/
 .python-version
-/src/jarvis/secret.txt
 venv*/
 
 /src/jarvis/secret.py

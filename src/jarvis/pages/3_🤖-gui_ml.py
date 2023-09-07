@@ -7,6 +7,8 @@ from streamlit_elements import elements, mui, html
 from jarvis import ml
 from jarvis import mongo_query as mq
 from jarvis import mongodb_atlas_store_files as ms
+import pysnooper
+
 
 def sidebar_list_ds():
     datasets = mq.list_all_collections()
@@ -60,17 +62,18 @@ def save_model():
             print(details)
 
 
+@pysnooper.snoop(depth=2)
 def select_model():
     models = ml.list_all_models()
-    st.selectbox("Select the model you would like to use!", models, key="model")
+    st.selectbox("Select the model you would like to use!", models, key="use_model")
 
 
 def predict():
     if st.session_state.selected_file:
         df = mq.load_and_reformat(st.session_state.selected_file)
-        if st.session_state.model:
+        if st.session_state.use_model:
             try:
-                model = st.session_state.model
+                model = st.session_state.use_model
                 result = ml.predict_stored_model(model, df)
                 st.dataframe(result)
             except ValueError:

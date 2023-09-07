@@ -7,6 +7,7 @@ from pymongo import MongoClient
 import pickle
 from sklearn.preprocessing import StandardScaler
 from jarvis import secret
+import streamlit as st
 
 
 def train_log_reg(df, threshold):
@@ -61,7 +62,8 @@ def train_svm(df):
 # Last accessed Feb 21, 2023
 
 
-link = secret.mongo_link
+link = link = st.secrets["mongo"]["mongo_link"]
+
 cluster = MongoClient(link)
 
 def store_ml_model(model, model_name):
@@ -93,6 +95,7 @@ def retrieve_model(model_name):
 def list_all_models():
     db = cluster["jarvis_models"]
     collections = db.list_collection_names()
+    print(collections)
     return collections
 
 

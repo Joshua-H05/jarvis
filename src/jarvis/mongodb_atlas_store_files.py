@@ -2,10 +2,10 @@
 
 import csv
 from pymongo import MongoClient
-from jarvis import secret
 import pandas as pd
+import streamlit as st
 
-link = secret.mongo_link
+link = st.secrets["mongo"]["mongo_link"]
 cluster = MongoClient(link)
 # lines 8 & 9 derived from source: https://pymongo.readthedocs.io/en/stable/tutorial.html
 # Last accessed: Feb 14, 2023
