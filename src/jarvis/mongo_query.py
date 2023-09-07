@@ -1,7 +1,6 @@
 # citation complete
 from pymongo import MongoClient
 import pandas as pd
-from jarvis import secret
 import streamlit as st
 
 link = link = st.secrets["mongo"]["mongo_link"]
@@ -27,7 +26,6 @@ def dict_list_to_df(doc):
 
 # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.from_dict.html
 # Last accessed Jan 25, 2023
-
 
 
 def load_and_reformat(collection_name):

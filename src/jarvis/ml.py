@@ -6,7 +6,6 @@ from sklearn.model_selection import train_test_split
 from pymongo import MongoClient
 import pickle
 from sklearn.preprocessing import StandardScaler
-from jarvis import secret
 import streamlit as st
 
 
