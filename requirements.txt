@@ -13,6 +13,7 @@ pymongo~=4.3.3
 plotly~=5.13.0
 streamlit-chat~=0.0.2.1
 streamlit-elements~=0.1.0
+jarvis~=0.0.post1.dev2+g2873aba.d20221122 /Users/joshua/ws/jarvis
 
 
 sklearn~=0.0.post1
