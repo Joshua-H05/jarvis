@@ -1,6 +1,5 @@
 # Citation complete
 from gtts import gTTS
-from playsound import playsound
 import os
 
 CWD = os.getcwd()
@@ -69,6 +68,7 @@ def say(utterance):
     os.system(f"afplay {path}")
 # Derived from source: https://github.com/TaylorSMarks/playsound
 # Last accessed: Dec 25, 2022
+
 
 
 if __name__ == "__main__":
