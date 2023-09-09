@@ -1,4 +1,3 @@
--e git+https://github.com/Joshua-H05/jarvis.git@cadf056e8485f9ce5cd6e594e97720d87e3bfac8#egg=jarvis
 PyAudio==0.2.12
 PySnooper==1.1.1
 
