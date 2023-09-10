@@ -2,6 +2,7 @@
 from gtts import gTTS
 import os
 from playsound import playsound
+import pysnooper
 
 
 CWD = os.getcwd()
@@ -65,6 +66,7 @@ def generate_file(utterance):
 # Last accessed: Dec 25, 2022
 
 
+@pysnooper.snoop()
 def say(utterance):
     path = utterances[utterance][1]
     print(path)
