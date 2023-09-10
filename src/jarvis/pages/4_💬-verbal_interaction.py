@@ -70,8 +70,8 @@ def reformat(utterance):
 
 
 def greet():
-    message(speak.utterances["greeting"][0])
-    speak.say("greeting")
+    message(utterances["greeting"][0])
+    say("greeting")
 
 
 # Layer 1
