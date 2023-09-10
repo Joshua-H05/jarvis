@@ -9,7 +9,7 @@ import streamlit as st
 from streamlit_chat import message
 
 from jarvis import speak, mongo_query as mq, record_and_recognize as rr, compute, ml
-
+import pysnooper
 KEY = 0
 
 
@@ -337,6 +337,7 @@ def parse_model():
                 speak.say("model_not_found")
 
 
+@pysnooper.snoop()
 def verbal_interaction():
     st.session_state["run"] = False
 

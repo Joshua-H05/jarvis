@@ -4,7 +4,7 @@ import os
 from pygame import mixer
 
 CWD = os.getcwd()
-MEDIADIR = f"{CWD}/src/jarvis"
+MEDIADIR = f"{CWD}/src/jarvis/voices"
 
 utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
                            f"{MEDIADIR}/greeting.mp3"],
@@ -60,6 +60,7 @@ def generate_file(utterance):
     path = utterances[utterance][1]
     tts = gTTS(sound, lang='en', tld='us')
     tts.save(path)
+    print(path)
 # Derived from source: https: // gtts.readthedocs.io / en / latest / module.html
 # Last accessed: Dec 25, 2022
 
@@ -82,5 +83,5 @@ def say(utterance):
 
 
 if __name__ == "__main__":
-    generate_file("model_not_found")
-    say("model_not_found")
+
+    say("func_type")
