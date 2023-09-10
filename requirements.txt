@@ -108,3 +108,5 @@ websocket-client==0.48.0
 websockets==10.4
 wikipedia==1.4.0
 zipp==3.11.0
+pygame~=2.5.1
+
