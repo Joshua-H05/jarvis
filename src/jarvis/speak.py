@@ -1,8 +1,7 @@
 # Citation complete
 from gtts import gTTS
 import os
-from pygame import mixer
-
+import pysnooper
 CWD = os.getcwd()
 MEDIADIR = f"{CWD}/src/jarvis/voices"
 
@@ -65,23 +64,14 @@ def generate_file(utterance):
 # Last accessed: Dec 25, 2022
 
 
+@pysnooper.snoop()
 def say(utterance):
     path = utterances[utterance][1]
-    mixer.init()
-
-    # Loading the song
-    mixer.music.load(path)
-
-    # Setting the volume
-    mixer.music.set_volume(0.7)
-
-    # Start playing the song
-    mixer.music.play()
+    os.system(f"afplay {path}")
 # Derived from source: https://github.com/TaylorSMarks/playsound
 # Last accessed: Dec 25, 2022
 
 
 
 if __name__ == "__main__":
-
-    say("func_type")
+    say("greeting")
