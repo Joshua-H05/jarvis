@@ -1,7 +1,7 @@
 # Citation complete
 from gtts import gTTS
 import os
-from pygame import mixer
+
 
 CWD = os.getcwd()
 MEDIADIR = f"{CWD}/src/jarvis/voices"
@@ -66,18 +66,7 @@ def generate_file(utterance):
 
 def say(utterance):
     path = utterances[utterance][1]
-
-    # Starting the mixer
-    mixer.init()
-
-    # Loading the song
-    mixer.music.load("song.mp3")
-
-    # Setting the volume
-    mixer.music.set_volume(0.7)
-
-    # Start playing the song
-    mixer.music.play()
+    os.system(f"afplay {path}")
 # Derived from source: https://github.com/TaylorSMarks/playsound
 # Last accessed: Dec 25, 2022
 
