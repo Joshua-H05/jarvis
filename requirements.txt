@@ -42,7 +42,6 @@ MarkupSafe==2.1.1
 matplotlib==3.6.2
 nltk==3.8
 numpy==1.23.5
-openai-whisper @ git+https://github.com/openai/whisper.git@7858aa9c08d98f75575035ecd6481f462d66ca27
 packaging==21.3
 pandas==1.5.2
 paramiko==3.0.0
@@ -85,7 +84,6 @@ smmap==5.0.0
 sounddevice==0.4.5
 soundfile==0.11.0
 soupsieve==2.3.2.post1
-SpeechRecognition==3.8.1
 storage==0.0.4.3
 streamlit==1.16.0
 streamlit-chat==0.0.2.1
@@ -106,8 +104,6 @@ validators==0.20.0
 watchdog==2.2.0
 websocket-client==0.48.0
 websockets==10.4
-wikipedia==1.4.0
 zipp==3.11.0
 pygame~=2.5.1
-playsound~=1.3.0
 
