@@ -8,7 +8,7 @@ import re
 import streamlit as st
 from streamlit_chat import message
 
-from jarvis import speak, mongo_query as mq, record_and_recognize as rr, compute, ml
+from jarvis import mongo_query as mq, record_and_recognize as rr, compute, ml
 
 CWD = os.getcwd()
 MEDIADIR = f"{CWD}/src/jarvis/voices"
