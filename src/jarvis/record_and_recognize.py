@@ -5,6 +5,7 @@ import datetime
 from google.oauth2 import service_account
 from google.cloud import speech
 import streamlit as st
+import os
 
 from jarvis import autostop
 
@@ -14,10 +15,13 @@ CHANNELS = 1
 RATE = 44100
 THRESHOLD = bytes(180)
 
+CWD = os.getcwd()
+MEDIADIR = f"{CWD}/src/jarvis/recorded_speech_files"
+
 
 def generate_file_name():
     f_name = str(datetime.datetime.now()) + ".wav"
-    return f_name
+    return f"{MEDIADIR}/{f_name}"
 
 
 SPEECH_FILE = generate_file_name()
