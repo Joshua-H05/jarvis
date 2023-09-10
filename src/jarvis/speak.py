@@ -1,11 +1,10 @@
 # Citation complete
 from gtts import gTTS
 import os
-from pygame import mixer
 
 
 CWD = os.getcwd()
-MEDIADIR = f"{CWD}/src/jarvis/voices"
+MEDIADIR = f"{CWD}/src/jarvis"
 
 utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
                            f"{MEDIADIR}/greeting.mp3"],
@@ -67,17 +66,8 @@ def generate_file(utterance):
 
 def say(utterance):
     path = utterances[utterance][1]
-    path = utterances[utterance][1]
-    mixer.init()
-
-    # Loading the song
-    mixer.music.load(path)
-
-    # Setting the volume
-    mixer.music.set_volume(0.7)
-
-    # Start playing the song
-    mixer.music.play()
+    print(path)
+    os.system(f"afplay {path}")
 # Derived from source: https://github.com/TaylorSMarks/playsound
 # Last accessed: Dec 25, 2022
 
