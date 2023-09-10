@@ -4,7 +4,7 @@ import os
 
 
 CWD = os.getcwd()
-MEDIADIR = f"{CWD}/src/jarvis/voices"
+MEDIADIR = f"/voices"
 
 utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
                            f"{MEDIADIR}/greeting.mp3"],
