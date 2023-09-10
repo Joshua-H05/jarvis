@@ -80,8 +80,8 @@ def ask_func_type():
         while True:
             global KEY
             KEY += 1
-            message(speak.utterances["func_type"][0], key=str(KEY))
-            speak.say("func_type")
+            message(utterances["func_type"][0], key=str(KEY))
+            say("func_type")
             transcription = rr.record_and_recognize()
             if transcription:
                 utterance = transcription["text"]
@@ -91,8 +91,8 @@ def ask_func_type():
                 return intent
             else:
                 KEY += 1
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
-                speak.say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
 
 
 def parse_func_type():
