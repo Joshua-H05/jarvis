@@ -2,6 +2,8 @@
 from gtts import gTTS
 import os
 import pysnooper
+import streamlit as st
+
 CWD = os.getcwd()
 MEDIADIR = f"{CWD}/src/jarvis/voices"
 
@@ -67,6 +69,7 @@ def generate_file(utterance):
 @pysnooper.snoop()
 def say(utterance):
     path = utterances[utterance][1]
+    st.text(path)
     os.system(f"afplay {path}")
 # Derived from source: https://github.com/TaylorSMarks/playsound
 # Last accessed: Dec 25, 2022
