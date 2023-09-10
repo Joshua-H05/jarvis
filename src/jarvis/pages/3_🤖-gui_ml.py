@@ -3,12 +3,14 @@
 
 import streamlit as st
 from streamlit_elements import elements, mui, html
+import os
 
 from jarvis import ml
 from jarvis import mongo_query as mq
 from jarvis import mongodb_atlas_store_files as ms
 import pysnooper
 
+CWD = os.getcwd()
 
 def sidebar_list_ds():
     datasets = mq.list_all_collections()
@@ -82,7 +84,7 @@ def predict():
 
 
 if __name__ == "__main__":
-    with open('/Users/joshua/ws/jarvis/src/jarvis/assets/styles.css') as f:
+    with open(f'{CWD}/src/jarvis/assets/styles.css') as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
     sidebar()
 
