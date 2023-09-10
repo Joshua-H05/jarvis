@@ -9,7 +9,53 @@ import streamlit as st
 from streamlit_chat import message
 
 from jarvis import speak, mongo_query as mq, record_and_recognize as rr, compute, ml
-import pysnooper
+
+CWD = os.getcwd()
+MEDIADIR = f"{CWD}/src/jarvis/voices"
+
+utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
+                           f"{MEDIADIR}/greeting.mp3"],
+
+              "func_type": ["How may I help you today? Would you like to Calculate statistical key figures,"
+                            " generate a visualization or predict?",
+                            f"{MEDIADIR}/func_type.mp3"],
+
+              "ques_ds": ["Which data set should I use?", f"/{MEDIADIR}/ques_ds.mp3"],
+
+              "ques_columns": ["Which columns would you like to use?",
+                               f"{MEDIADIR}/ques_columns.mp3"],
+
+              "request_repetition": ["I'm not sure I understand. Could you repeat please?",
+                                     f"{MEDIADIR}/request_repetition.mp3"],
+
+              "ques_graphs": ["What type of graph would you like me to create? A pie chart, or a histogram?",
+                              f"{MEDIADIR}/ques_graphs.mp3"],
+
+              "ques_pred": ["Which prediction algorithm should I use? Linear regression, "
+                            "logistic regression or k-means clustering?",
+                            f"{MEDIADIR}/ques_pred.mp3"],
+
+              "ques_stat_figs": ["Which statistical figures should I calculate? The mean, the median or the standard "
+                                 "deviation?", f"{MEDIADIR}/ques_stat_figs.mp3"],
+
+              "error_df_not_found": ["Sorry, but I wasn't able to find the dataset you requested",
+                                     f"{MEDIADIR}/error_df_not_found.mp3"],
+
+              "error_column_not_found": ["Sorry, but I wasn't able to find the column you requested",
+                                         f"{MEDIADIR}/error_column_not_found.mp3"],
+
+              "ques_algo": ["What is the name of the model you would like to use?",
+                            f"{MEDIADIR}/ques_algo.mp3"],
+              "ques_mlds": ["Which dataset would you like to perform the prediction on?",
+                            f"{MEDIADIR}/ques_pred_data.mp3"],
+              "model_not_found": ["Sorry, but I wasn't able to find the model you requested",
+                                  f"{MEDIADIR}/model_not_found.mp3"]
+              }
+
+def say(utterance):
+    path = utterances[utterance][1]
+    os.system(f"afplay {path}")
+
 KEY = 0
 
 
@@ -67,8 +113,8 @@ def parse_func_type():
             else:
                 global KEY
                 KEY += 1
-                speak.say("request_repetition")
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
 
 
 # Layer 2
@@ -77,8 +123,8 @@ def ask_ds():
         while True:
             global KEY
             KEY += 1
-            message(speak.utterances["ques_ds"][0], key=str(KEY))
-            speak.say("ques_ds")
+            message(utterances["ques_ds"][0], key=str(KEY))
+            say("ques_ds")
             response_df = rr.record_and_recognize()
             if response_df:
                 utterance = response_df["text"]
@@ -87,8 +133,8 @@ def ask_ds():
                 return utterance
             else:
                 KEY += 1
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
-                speak.say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
 
 
 def ask_mlds():
@@ -96,8 +142,8 @@ def ask_mlds():
         while True:
             global KEY
             KEY += 1
-            message(speak.utterances["ques_mlds"][0], key=str(KEY))
-            speak.say("ques_mlds")
+            message(utterances["ques_mlds"][0], key=str(KEY))
+            say("ques_mlds")
             data = rr.record_and_recognize()
             if data:
                 utterance = data["text"]
@@ -106,8 +152,8 @@ def ask_mlds():
                 return utterance
             else:
                 KEY += 1
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
-                speak.say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
 
 
 def ask_model():
@@ -115,8 +161,8 @@ def ask_model():
         while True:
             global KEY
             KEY += 1
-            message(speak.utterances["ques_algo"][0], key=str(KEY))
-            speak.say("ques_algo")
+            message(utterances["ques_algo"][0], key=str(KEY))
+            say("ques_algo")
             response_df = rr.record_and_recognize()
             if response_df:
                 utterance = response_df["text"]
@@ -125,8 +171,8 @@ def ask_model():
                 return utterance
             else:
                 KEY += 1
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
-                speak.say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
 
 
 def verify_mlds():
@@ -140,8 +186,8 @@ def verify_mlds():
             else:
                 global KEY
                 KEY += 1
-                message(speak.utterances["error_df_not_found"][0], key=str(KEY))
-                speak.say("error_df_not_found")
+                message(utterances["error_df_not_found"][0], key=str(KEY))
+                say("error_df_not_found")
 
 
 def verify_ds():
@@ -159,8 +205,8 @@ def verify_ds():
             else:
                 global KEY
                 KEY += 1
-                message(speak.utterances["error_df_not_found"][0], key=str(KEY))
-                speak.say("error_df_not_found")
+                message(utterances["error_df_not_found"][0], key=str(KEY))
+                say("error_df_not_found")
 
 
 # Layer 3
@@ -169,8 +215,8 @@ def ask_data():
         while True:
             global KEY
             KEY += 1
-            message(speak.utterances["ques_columns"][0], key=str(KEY))
-            speak.say("ques_columns")
+            message(utterances["ques_columns"][0], key=str(KEY))
+            say("ques_columns")
             response_columns = rr.record_and_recognize()
             if response_columns:
                 utterance = response_columns["text"].strip()
@@ -179,8 +225,8 @@ def ask_data():
                 return utterance
             else:
                 KEY += 1
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
-                speak.say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
 
 
 def parse_data(df):
@@ -196,8 +242,8 @@ def parse_data(df):
             else:
                 global KEY
                 KEY += 1
-                message(speak.utterances["error_column_not_found"][0], key=str(KEY))
-                speak.say("error_column_not_found")
+                message(utterances["error_column_not_found"][0], key=str(KEY))
+                say("error_column_not_found")
 
 
 # Layer 4
@@ -209,8 +255,8 @@ def parse_vis(df, column):
         while True:
             global KEY
             KEY += 1
-            message(speak.utterances["ques_graphs"][0], key=str(KEY))
-            speak.say("ques_graphs")
+            message(utterances["ques_graphs"][0], key=str(KEY))
+            say("ques_graphs")
             response_graph = rr.record_and_recognize()
             if response_graph:
                 utterance = response_graph["text"]
@@ -224,21 +270,21 @@ def parse_vis(df, column):
                     return compute.plot_pie_chart(dataframe=df, column=column)
                 else:
                     KEY += 1
-                    speak.say("request_repetition")
-                    message(speak.utterances["request_repetition"][0], key=str(KEY))
+                    say("request_repetition")
+                    message(utterances["request_repetition"][0], key=str(KEY))
                     parse_vis(df, column)
             else:
                 KEY += 1
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
-                speak.say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
 
 
 def ask_predict():
     if st.session_state["run"]:
         global KEY
         KEY += 1
-        message(speak.utterances["ques_algo"][0], key=str(KEY))
-        speak.say("ques_algo")
+        message(utterances["ques_algo"][0], key=str(KEY))
+        say("ques_algo")
         utterance = rr.record_and_recognize()["text"]
         KEY += 1
         message(utterance, is_user=True, key=str(KEY))
@@ -260,8 +306,8 @@ def parse_predict():
             else:
                 global KEY
                 KEY += 1
-                speak.say("request_repetition")
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
 
 
 def ask_stat_figs():
@@ -269,8 +315,8 @@ def ask_stat_figs():
         while True:
             global KEY
             KEY += 1
-            message(speak.utterances["ques_stat_figs"][0], key=str(KEY))
-            speak.say("ques_stat_figs")
+            message(utterances["ques_stat_figs"][0], key=str(KEY))
+            say("ques_stat_figs")
             response_stat_figs = rr.record_and_recognize()
             if response_stat_figs:
                 utterance = response_stat_figs["text"]
@@ -280,8 +326,8 @@ def ask_stat_figs():
                 return intent
             else:
                 KEY += 1
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
-                speak.say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
 
 
 def parse_stat_figs(df, column):
@@ -312,8 +358,8 @@ def parse_stat_figs(df, column):
             else:
                 global KEY
                 KEY += 1
-                speak.say("request_repetition")
-                message(speak.utterances["request_repetition"][0], key=str(KEY))
+                say("request_repetition")
+                message(utterances["request_repetition"][0], key=str(KEY))
 
 
 def info():
@@ -333,8 +379,8 @@ def parse_model():
             else:
                 global KEY
                 KEY += 1
-                message(speak.utterances["model_not_found"][0], key=str(KEY))
-                speak.say("model_not_found")
+                message(utterances["model_not_found"][0], key=str(KEY))
+                say("model_not_found")
 
 
 def verbal_interaction():
