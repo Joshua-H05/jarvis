@@ -66,6 +66,7 @@ def generate_file(utterance):
 
 def say(utterance):
     path = utterances[utterance][1]
+    print(path)
     os.system(f"afplay {path}")
 # Derived from source: https://github.com/TaylorSMarks/playsound
 # Last accessed: Dec 25, 2022
