@@ -84,9 +84,9 @@ sounddevice==0.4.5
 soundfile==0.11.0
 soupsieve==2.3.2.post1
 storage==0.0.4.3
-streamlit==1.16.0
-streamlit-chat==0.0.2.1
-streamlit-elements==0.1.0
+streamlit~=1.26.0
+streamlit-chat~=0.0.2.1
+streamlit-elements~=0.1.0
 tenacity==8.2.1
 threadpoolctl==3.1.0
 toml==0.10.2
