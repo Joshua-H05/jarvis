@@ -1,15 +1,14 @@
+import os
+import numpy as np
 import streamlit as st
-from audiorecorder import audiorecorder
+from io import BytesIO
+import streamlit.components.v1 as components
+from jarvis import st_custom_components
+wav_audio_data = st_custom_components.st_audiorec()
 
-st.title("Audio Recorder")
-audio = audiorecorder("Click to record", "Click to stop recording")
+if wav_audio_data is not None:
+    # display audio data as received on the backend
+    st.audio(wav_audio_data, format='audio/wav')
 
-if not audio.empty():
-    # To play audio in frontend:
-    st.audio(audio.export().read())
-
-    # To save audio to a file, use pydub export method:
-    audio.export("audio.wav", format="wav")
-
-    # To get audio properties, use pydub AudioSegment properties:
-    st.write(f"Frame rate: {audio.frame_rate}, Frame width: {audio.frame_width}, Duration: {audio.duration_seconds} seconds")
+# INFO: by calling the function an instance of the audio recorder is created
+# INFO: once a recording is completed, audio data will be saved to wav_audio_data
