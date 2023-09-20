@@ -30,7 +30,7 @@ gTTS==2.3.0
 idna==3.4
 importlib-metadata==5.1.0
 iniconfig==1.1.1
--e git+https://github.com/Joshua-H05/jarvis.git@38a71536f091a967d73ba8a0ad0354bba787a31c#egg=jarvis
+-e .
 Jinja2==3.1.2
 joblib==1.2.0
 jsonschema==4.17.3
