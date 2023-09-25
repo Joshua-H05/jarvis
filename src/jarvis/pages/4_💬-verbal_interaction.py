@@ -7,6 +7,7 @@ from nltk.corpus import stopwords
 import re
 import streamlit as st
 from streamlit_chat import message
+import pysnooper
 
 from jarvis import mongo_query as mq, record_and_recognize as rr, compute, ml
 
@@ -247,36 +248,34 @@ def parse_data(df):
 
 
 # Layer 4
+@pysnooper.snoop()
 def parse_vis(df, column):
     hist = ["histogram"]
     pie = ["pie", "chart"]
 
     if st.session_state["run"]:
-        while True:
-            global KEY
-            KEY += 1
-            message(utterances["ques_graphs"][0], key=str(KEY))
-            say("ques_graphs")
-            response_graph = rr.record_and_recognize()
-            if response_graph:
-                utterance = response_graph["text"]
-                KEY += 1
-                message(utterance, is_user=True, key=str(KEY))
-                intent = reformat(utterance)
+        global KEY
+        KEY += 1
+        message(utterances["ques_graphs"][0], key=str(KEY))
+        say("ques_graphs")
+        response_graph = rr.record_and_recognize()["text"]
+        if not response_graph:
+            response_graph = "..."
+        KEY += 1
+        message(response_graph, is_user=True, key=str(KEY))
+        intent = reformat(response_graph)
 
-                if hist == intent:
-                    return compute.plot_histogram(dataframe=df, column=column)
-                elif pie == intent:
-                    return compute.plot_pie_chart(dataframe=df, column=column)
-                else:
-                    KEY += 1
-                    say("request_repetition")
-                    message(utterances["request_repetition"][0], key=str(KEY))
-                    parse_vis(df, column)
-            else:
-                KEY += 1
-                message(utterances["request_repetition"][0], key=str(KEY))
-                say("request_repetition")
+        if hist == intent:
+            compute.plot_histogram(dataframe=df, column=column)
+        elif pie == intent:
+            return compute.plot_pie_chart(dataframe=df, column=column)
+        else:
+            KEY += 1
+            say("request_repetition")
+            message(utterances["request_repetition"][0], key=str(KEY))
+            parse_vis(df, column)
+
+
 
 
 def ask_predict():

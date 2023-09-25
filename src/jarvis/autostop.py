@@ -113,7 +113,6 @@ def record():
 
 def record_to_file(path):
     "Records from the microphone and outputs the resulting data to 'path'"
-    print("please speak a word into the microphone")
     sample_width, data = record()
     data = pack('<' + ('h' * len(data)), *data)
 
@@ -128,9 +127,7 @@ def record_to_file(path):
 
 
 if __name__ == '__main__':
-    print("please speak a word into the microphone")
     record_to_file('demo.wav')
-    print("done - result written to demo.wav")
 
 # Source for entire script: stackoverflow, date: 22, April 2023 by Josiah Yoder
 # https://stackoverflow.com/questions/64491394/detect-record-audio-in-python-trim-beginning-silence

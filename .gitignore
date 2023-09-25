@@ -57,7 +57,6 @@ venv*/
 /src/jarvis/secret.py
 /src/jarvis/data/customer.csv
 /src/jarvis/suv_data.csv
-/src/jarvis/key.json
 /.streamlit/secrets.toml
 /src/jarvis/data/cars.csv
 /src/jarvis/data/cars.csv

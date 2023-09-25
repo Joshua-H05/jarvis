@@ -56,7 +56,7 @@ def standard_deviation(dataframe, column):
 # Derived from source: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.std.html
 # Date last accessed: 29. August 2023
 
-def plot_histogram(dataframe, column, st_col):
+def plot_histogram(dataframe, column, st_col=None):
     fig = px.histogram(dataframe, x=column)
     st.plotly_chart(fig)
 # Derived from source: https://plotly.com/python/histograms/
