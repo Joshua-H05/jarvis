@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import pandas as pd
 import streamlit as st
 
-link = link = st.secrets["mongo"]["mongo_link"]
+link = st.secrets["mongo"]["mongo_link"]
 
 cluster = MongoClient(link)
 

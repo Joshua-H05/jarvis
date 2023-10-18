@@ -18,7 +18,7 @@ utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
                            f"{MEDIADIR}/greeting.mp3"],
 
               "func_type": ["How may I help you today? Would you like to Calculate statistical key figures,"
-                            " generate a visualization or predict?",
+                            " generate a visualization or perform a prediction?",
                             f"{MEDIADIR}/func_type.mp3"],
 
               "ques_ds": ["Which data set should I use?", f"/{MEDIADIR}/ques_ds.mp3"],
@@ -29,7 +29,7 @@ utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
               "request_repetition": ["I'm not sure I understand. Could you repeat please?",
                                      f"{MEDIADIR}/request_repetition.mp3"],
 
-              "ques_graphs": ["What type of graph would you like me to create? A pie chart, or a histogram?",
+              "ques_graphs": ["What type of graph would you like me to create? A pie chart, or a bar chart?",
                               f"{MEDIADIR}/ques_graphs.mp3"],
 
               "ques_pred": ["Which prediction algorithm should I use? Linear regression, "
@@ -98,7 +98,7 @@ def ask_func_type():
 
 def parse_func_type():
     generate_visualization = ["generate", "visualization"]
-    predict = ["predict"]
+    predict = ["perform", "prediction"]
     calc_stat_figs = ["calculate", "statistical", "key", "figures"]
 
     if st.session_state["run"]:
@@ -250,7 +250,7 @@ def parse_data(df):
 # Layer 4
 @pysnooper.snoop()
 def parse_vis(df, column):
-    hist = ["histogram"]
+    hist = ["bar", "chart"]
     pie = ["pie", "chart"]
 
     if st.session_state["run"]:
@@ -259,7 +259,7 @@ def parse_vis(df, column):
         message(utterances["ques_graphs"][0], key=str(KEY))
         say("ques_graphs")
         response_graph = rr.record_and_recognize()["text"]
-        if not response_graph:
+        if response_graph == None:
             response_graph = "..."
         KEY += 1
         message(response_graph, is_user=True, key=str(KEY))
@@ -338,21 +338,19 @@ def parse_stat_figs(df, column):
 
     mean_fig = all_figs["mean"]
     median_fig = all_figs["median"]
-    mode_fig = all_figs["mode"]
-    range_fig = all_figs["range"]
     stdev_fig = all_figs["stddev"]
 
     if st.session_state["run"]:
         while True:
             intent = ask_stat_figs()
             if avg == intent:
-                st.write(str(mean_fig))
+                st.metric("Mean", str(mean_fig))
                 break
             elif stdev == intent:
-                st.write(str(stdev_fig))
+                st.metric("Standard Deviation", str(stdev_fig))
                 break
             elif median == intent:
-                st.write(str(median_fig))
+                st.metric( "Median" ,str(median_fig))
                 break
             else:
                 global KEY

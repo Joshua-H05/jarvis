@@ -8,6 +8,7 @@ import streamlit as st
 import os
 
 from jarvis import autostop
+from deepgram import Deepgram
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -70,31 +71,23 @@ def read_file(filename, chunk_size=5242880):
 # Copied from tutorial: https://www.assemblyai.com/blog/python-speech-recognition-in-30-lines-of-code/
 # Last accessed: # Last accessed Feb 4th, 2023
 
-def recognize(file):
-    credentials = service_account.Credentials.from_service_account_info(
-        st.secrets["google_key"])
-    client = speech.SpeechClient(credentials=credentials)
+from deepgram import Deepgram
+import json
 
-    with open(file, "rb") as audio_file:
-        content = audio_file.read()
+DEEPGRAM_API_KEY = "df013c5e914d09190f34c752b03bc0b7f447b65b"
 
-    audio = speech.RecognitionAudio(content=content)
+def recognize(path_to_file):
+    # Initializes the Deepgram SDK
+    deepgram = Deepgram(DEEPGRAM_API_KEY)
+    # Open the audio file
+    with open(path_to_file, 'rb') as audio:
+        # ...or replace mimetype as appropriate
+        source = {'buffer': audio, 'mimetype': 'audio/wav'}
+        response = deepgram.transcription.sync_prerecorded(source, {'punctuate': False})
+        print(json.dumps(response, indent=4))
+        transcript = {"text": response["results"]["channels"][0]["alternatives"][0]["transcript"]}
 
-    config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        language_code="en-US",
-        enable_word_confidence=True,
-    )
-
-    response = client.recognize(config=config, audio=audio)
-
-    for i, result in enumerate(response.results):
-        alternative = result.alternatives[0]
-        results = {
-                "text":format(alternative.transcript),
-                "confidence": alternative.words[0].confidence,
-                }
-        return results
+    return transcript
 
 
 # source https://learndataanalysis.org/source-code-getting-started-with-google-cloud-speech-to-text-api-in-python/

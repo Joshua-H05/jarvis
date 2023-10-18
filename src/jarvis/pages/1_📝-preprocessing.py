@@ -30,7 +30,6 @@ def ohe():
 
     for col in selected:
         df = p.one_hot(df, col)
-        print(df)
     st.dataframe(df, height=80)
     st.session_state["df"] = df
 
@@ -50,7 +49,6 @@ def rm_row():
     df = st.session_state["df"]
     st.subheader("Remove Rows")
     unwanted = st.text_input("Type in the indices of all the rows you would like to remove, separated with commas:")
-    print(type(unwanted))
     if unwanted:
         unwanted = unwanted.split(",")
         result = p.rm_row(df, [int(i) for i in unwanted])
@@ -65,16 +63,17 @@ def replace():
     cols = mq.list_all_columns(df)
     selected = st.multiselect("Select The Columns You Would Like To Edit!", cols)
     options = {"Drop Columns With Missing Values": "drop",
-               "Replace Missing Values With Zeros": "zeros",
+               "Replace Missing Values With Zeros": "zero",
                "Replace Missing Values With The Mean Value Of The Column": "mean",
                "Replace Missing Values With The Median Value Of The Column": "median",
                }
     option = st.radio(label="Select The Method You Would Like To Use", options=options.keys())
     if st.button("Apply Changes!"):
+        df_copy = df.copy(deep=True)
         result = p.replace(df, selected, options[option])
         st.dataframe(result, height=80)
         st.session_state["df"] = result
-        if result.equals(df):  # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html
+        if result.equals(df_copy):  # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html
             st.success("Data appears to be complete!")
         else:
             st.success("Changes Applied!")

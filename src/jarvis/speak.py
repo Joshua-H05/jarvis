@@ -5,13 +5,13 @@ import pysnooper
 import streamlit as st
 
 CWD = os.getcwd()
-MEDIADIR = f"{CWD}/src/jarvis/voices"
+MEDIADIR = f"{CWD}/voices"
 
 utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
                            f"{MEDIADIR}/greeting.mp3"],
 
               "func_type": ["How may I help you today? Would you like to Calculate statistical key figures,"
-                            " generate a visualization or predict?",
+                            " generate a visualization or perform a prediction?",
                             f"{MEDIADIR}/func_type.mp3"],
 
               "ques_ds": ["Which data set should I use?", f"/{MEDIADIR}/ques_ds.mp3"],
@@ -22,7 +22,7 @@ utterances = {"greeting": ["Hello, nice to meet you! I'm Jarvis",
               "request_repetition": ["I'm not sure I understand. Could you repeat please?",
                                      f"{MEDIADIR}/request_repetition.mp3"],
 
-              "ques_graphs": ["What type of graph would you like me to create? A pie chart, or a histogram?",
+              "ques_graphs": ["What type of graph would you like me to create? A pie chart, or a bar chart?",
                               f"{MEDIADIR}/ques_graphs.mp3"],
 
               "ques_pred": ["Which prediction algorithm should I use? Linear regression, "
@@ -76,4 +76,4 @@ def say(utterance):
 
 
 if __name__ == "__main__":
-    say("greeting")
+    generate_all_files()
