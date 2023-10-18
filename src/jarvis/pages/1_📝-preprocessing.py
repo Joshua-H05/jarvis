@@ -75,6 +75,7 @@ def replace():
         st.session_state["df"] = result
         if result.equals(df_copy):  # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html
             st.success("Data appears to be complete!")
+            st.session_state["df"] = result
         else:
             st.success("Changes Applied!")
 
