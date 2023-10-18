@@ -56,7 +56,6 @@ def rm_row():
         st.session_state["df"] = result
 
 
-# Not tested yet
 def replace():
     df = st.session_state["df"]
     st.subheader("Remove Missing Values")
