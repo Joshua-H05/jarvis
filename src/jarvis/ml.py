@@ -28,6 +28,7 @@ def train_log_reg(df, threshold):
 # Derived from Source: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
 # Last accessed:  Feb 23, 2023
 
+
 def train_log_reg_cv(df):
     y = df["labels"]
     x = df[[col for col in list(df) if col not in ("labels", "ID", "_id")]]

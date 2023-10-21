@@ -66,7 +66,6 @@ def generate_file(utterance):
 # Last accessed: Dec 25, 2022
 
 
-@pysnooper.snoop()
 def say(utterance):
     path = utterances[utterance][1]
     os.system(f"afplay {path}")

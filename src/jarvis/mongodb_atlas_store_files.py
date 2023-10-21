@@ -39,6 +39,7 @@ def store_uploaded_file(file, ds_name):
         print(row)
         dict_list.append(row)
     col.insert_many(dict_list)
+
 # function copied from streamlit https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
 # Last accessed: Feb 14, 2023
 

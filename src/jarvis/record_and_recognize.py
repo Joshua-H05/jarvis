@@ -6,7 +6,6 @@ import datetime
 import os
 
 from jarvis import autostop
-from deepgram import Deepgram
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16

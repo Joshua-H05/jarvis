@@ -4,7 +4,6 @@ import pandas as pd
 import streamlit as st
 
 link = st.secrets["mongo"]["mongo_link"]
-
 cluster = MongoClient(link)
 
 

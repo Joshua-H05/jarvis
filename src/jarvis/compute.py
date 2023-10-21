@@ -3,7 +3,6 @@ from jarvis import mongo_query as mq
 import streamlit as st
 import plotly.express as px
 
-
 def composite_stats(dataframe, column):
 
     statistics = {
