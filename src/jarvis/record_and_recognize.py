@@ -2,9 +2,7 @@
 import pyaudio
 import wave
 import datetime
-from google.oauth2 import service_account
-from google.cloud import speech
-import streamlit as st
+
 import os
 
 from jarvis import autostop
@@ -90,8 +88,8 @@ def recognize(path_to_file):
     return transcript
 
 
-# source https://learndataanalysis.org/source-code-getting-started-with-google-cloud-speech-to-text-api-in-python/
-# Last accessed Feb 4th, 2023
+# source: https://developers.deepgram.com/docs/getting-started-with-pre-recorded-audio
+# Last accessed Oct 21, 2023
 
 def record_and_recognize():
     autostop.record_to_file(SPEECH_FILE)

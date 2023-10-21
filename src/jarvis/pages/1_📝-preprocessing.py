@@ -23,7 +23,11 @@ def sidebar():
 
 
 def ohe():
-    df = st.session_state["df"]
+    try:
+        df = st.session_state["new_df"]
+    except KeyError:
+        df = st.session_state["df"]
+
     st.subheader("One Hot Encoding")
     cols = mq.list_all_columns(df)
     selected = st.multiselect("Select The Columns You Would Like To Encode!", cols)
@@ -31,29 +35,39 @@ def ohe():
     for col in selected:
         df = p.one_hot(df, col)
     st.dataframe(df, height=80)
-    st.session_state["df"] = df
+    st.session_state["new_df"] = df
 
 
 def rm_col():
-    df = st.session_state["df"]
+    try:
+        df = st.session_state["new_df"]
+    except KeyError:
+        df = st.session_state["df"]
     st.subheader("Remove Columns")
     cols = mq.list_all_columns(df)
     selected = st.multiselect("Select The Columns You Would Like To Remove!", cols)
+    apply = st.button("Apply", key=111)
+    if apply:
 
-    df = p.rm_col(df, selected)
-    st.dataframe(df, height=80)
-    st.session_state["df"] = df
+        df = p.rm_col(df, selected)
+        st.dataframe(df, height=80)
+        st.session_state["new_df"] = df
 
 
 def rm_row():
-    df = st.session_state["df"]
+    try:
+        df = st.session_state["new_df"]
+    except KeyError:
+        df = st.session_state["df"]
     st.subheader("Remove Rows")
     unwanted = st.text_input("Type in the indices of all the rows you would like to remove, separated with commas:")
-    if unwanted:
-        unwanted = unwanted.split(",")
-        result = p.rm_row(df, [int(i) for i in unwanted])
-        st.dataframe(result, height=80)
-        st.session_state["df"] = result
+    apply = st.button("Apply", key=100)
+    if apply:
+        if unwanted:
+            unwanted = unwanted.split(",")
+            result = p.rm_row(df, [int(i) for i in unwanted])
+            st.dataframe(result, height=80)
+            st.session_state["new_df"] = result
 
 
 def replace():
@@ -74,13 +88,18 @@ def replace():
         st.session_state["df"] = result
         if result.equals(df_copy):  # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html
             st.success("Data appears to be complete!")
-            st.session_state["df"] = result
+            st.session_state["new_df"] = result
         else:
             st.success("Changes Applied!")
+            st.session_state["new_df"] = result
+            st.session_state["replaced"] = True
 
 
 def op():
-    df = st.session_state["df"]
+    try:
+        df = st.session_state["new_df"]
+    except KeyError:
+        df = st.session_state["df"]
     try:
         st.subheader("Feature Engineering")
         cols = mq.list_all_columns(df)
@@ -92,7 +111,7 @@ def op():
         if first and second and operator and name:
             result = p.operation(df=df, name=name, operator=operator, col1=first, col2=second)
             st.dataframe(result, height=80)
-            st.session_state["df"] = result
+            st.session_state["new_df"] = result
     except ValueError:
         st.warning("Sorry, but we can't seem to engineer this feature. Please pick another one.")
 
@@ -100,7 +119,7 @@ def op():
 def save():
     file_name = st.text_input("What would you like to name your file?")
     if st.button("Save your file?"):
-        data = st.session_state["df"].to_dict(orient="records")
+        data = st.session_state["new_df"].to_dict(orient="records")
         ms.save(file_name, data)
 
 
@@ -108,11 +127,12 @@ if __name__ == "__main__":
     sidebar()
     name = st.session_state.selected_file
     st.session_state["df"] = mq.load_and_reformat(name)
-    df = st.session_state["df"]
-    st.dataframe(df, height=80)
+    st.session_state["replaced"] = False
+    original = st.session_state["df"]
+    st.dataframe(original, height=80)
+    replace()
     rm_col()
     rm_row()
-    replace()
     op()
     ohe()
     save()

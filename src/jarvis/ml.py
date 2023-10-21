@@ -112,6 +112,11 @@ def pred(model, df):
     df["results"] = results
     return df
 
+# Lines 109- 110: Derived from source: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
+# Last accessed 21 Oct, 2023
+
+# Lines 111: Derived from source: https://scikit-learn.org/stable/tutorial/statistical_inference/supervised_learning.html
+# Last accessed 21 Oct, 2023
 
 if __name__ == "__main__":
     pd.set_option('display.max_rows', None)

@@ -82,7 +82,13 @@ def metrics():
     col = st.session_state.metric_col
     try:
         a1.metric("Mean", compute.compute_mean(df, col))
+    except TypeError:
+        st.sidebar.warning("Sorry, but we could not plot the data you have selected. Please try something else.")
+    try:
         a2.metric("Mode", compute.compute_mode(df, col))
+    except TypeError:
+        st.sidebar.warning("Sorry, but we could not plot the data you have selected. Please try something else.")
+    try:
         a3.metric("Median", compute.compute_median(df, col))
     except TypeError:
         st.sidebar.warning("Sorry, but we could not plot the data you have selected. Please try something else.")
